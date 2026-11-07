@@ -58,6 +58,4 @@ BalatROM uses [GBDK](https://github.com/gbdk-2020/gbdk-2020) and [SDCC](https://
 
 I'll keep updating this version with fixes and more of the game.
 
-If BalatROM gets popular and there's enough demand for a fuller game, I'll make my own version too. Star the repo or [open an issue](https://github.com/1kuna/balatrom/issues) to tell me what you'd want in it.
-
-No Balatro install? Stay tuned.
+If BalatROM gets popular and there's enough demand for a fuller game, I'll make my own game inspired by Balatro. It'll be its own thing, so you won't need a Balatro install to play it. Star the repo or [open an issue](https://github.com/1kuna/balatrom/issues) to tell me what you'd want in it.
