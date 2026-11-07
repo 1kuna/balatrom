@@ -1,0 +1,8 @@
+.DS_Store
+# Never commit game files, ROMs or saves
+*.gb
+*.gbc
+*.sav
+*.love
+*.lua
+*.zip

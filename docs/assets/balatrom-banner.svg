@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-labelledby="title desc">
+  <title id="title">BalatROM</title>
+  <desc id="desc">An unofficial Balatro fan adaptation for Game Boy Color. A dark green banner with cream lettering, amber details, and three abstract playing cards.</desc>
+  <defs>
+    <linearGradient id="felt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0c2b26"/>
+      <stop offset="1" stop-color="#071c19"/>
+    </linearGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 H 0 V 24" fill="none" stroke="#f7f0dc" stroke-opacity=".035" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="400" rx="24" fill="url(#felt)"/>
+  <rect width="1280" height="400" rx="24" fill="url(#grid)"/>
+  <path d="M32 72V32h40 M1208 32h40v40 M32 328v40h40 M1208 368h40v-40" fill="none" stroke="#d4ad60" stroke-width="3"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+    <text x="76" y="92" fill="#d4ad60" font-size="15" font-weight="700" letter-spacing="3">UNOFFICIAL FAN ADAPTATION</text>
+    <text x="72" y="216" fill="#f7f0dc" font-size="105" font-weight="800" letter-spacing="-7">Balat<tspan fill="#e4bc70">ROM</tspan></text>
+    <text x="78" y="269" fill="#cedcd3" font-size="22">Built locally. Made for Game Boy Color.</text>
+    <path d="M78 309h56" stroke="#d4ad60" stroke-width="3"/>
+    <text x="151" y="315" fill="#93afa1" font-size="14" letter-spacing="2">YOUR COPY · YOUR BUILD</text>
+  </g>
+  <g transform="translate(960 192)" fill="none" stroke-linejoin="round">
+    <g transform="rotate(-18)">
+      <rect x="-89" y="-104" width="140" height="196" rx="10" fill="#173c31" stroke="#426253" stroke-width="3"/>
+      <rect x="-74" y="-89" width="110" height="166" rx="3" stroke="#63806b" stroke-width="2"/>
+      <path d="M-63-74l77 136 M-63 62L14-74" stroke="#426253" stroke-width="2"/>
+    </g>
+    <g transform="translate(49 7) rotate(10)">
+      <rect x="-70" y="-98" width="140" height="196" rx="10" fill="#d4ad60" stroke="#d4ad60" stroke-width="3"/>
+      <rect x="-55" y="-83" width="110" height="166" rx="3" stroke="#18372c" stroke-width="2"/>
+      <path d="M0-31L23 0 0 31-23 0Z" fill="#18372c"/>
+    </g>
+    <g transform="translate(115 40) rotate(24)">
+      <rect x="-70" y="-98" width="140" height="196" rx="10" fill="#f7f0dc" stroke="#f7f0dc" stroke-width="3"/>
+      <path d="M0-40L29-6Q42 17 19 22Q10 23 5 15L10 38H-10L-5 15Q-10 23-19 22Q-42 17-29-6Z" fill="#173c31"/>
+      <path d="M-47-75h13v13h-13z M34 62h13v13H34z" fill="#d4ad60"/>
+    </g>
+  </g>
+</svg>
