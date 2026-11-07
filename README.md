@@ -54,6 +54,10 @@ BalatROM is an unofficial fan project. It isn't affiliated with or endorsed by L
 
 BalatROM uses [GBDK](https://github.com/gbdk-2020/gbdk-2020) and [SDCC](https://sdcc.sourceforge.net/) to build the ROM. Third-party licenses ship inside the app, and the compiler source is attached to each release.
 
-## No Balatro install?
+## What's next
 
-Something new is in the works. Stay tuned.
+I'll keep updating this version with fixes and more of the game.
+
+If BalatROM gets popular and there's enough demand for a fuller game, I'll make my own version too. Star the repo or [open an issue](https://github.com/1kuna/balatrom/issues) to tell me what you'd want in it.
+
+No Balatro install? Stay tuned.
