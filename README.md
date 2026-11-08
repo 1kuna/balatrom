@@ -43,7 +43,7 @@ The full walkthrough is in the [install guide](INSTALL.md).
 
 - **It's a Game Boy Color version, not the full game.** Some jokers and features didn't make the cut to fit the hardware.
 - **Only the Steam version 1.0.1o works right now.** If Steam updates Balatro, the builder will tell you it's not supported yet.
-- **Real hardware isn't tested yet.** Flash carts and handhelds might work, but no promises.
+- **Tested on real hardware with a ModRetro Chromatic.** Other Game Boy Color hardware should work too, but hasn't been tested yet.
 - **Your runs don't carry over** between desktop Balatro and BalatROM.
 
 ## Found a bug?

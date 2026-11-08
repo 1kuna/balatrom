@@ -18,7 +18,7 @@ No. It only reads the game files already on your computer.
 No. It's a Game Boy Color version, so some jokers and features had to go.
 
 **Does it work on a real Game Boy Color?**
-It isn't tested on real hardware yet. Flash carts and handhelds might work, but no promises.
+It's been tested on a ModRetro Chromatic. Other hardware and flash carts should work too, but haven't been tested yet. If you try one, [let me know](https://github.com/1kuna/balatrom/issues) how it goes.
 
 **Does it work on the original Game Boy?**
 No. It's Game Boy Color only.
