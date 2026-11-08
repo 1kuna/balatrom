@@ -20,12 +20,16 @@ BalatROM is a free fan project that turns the copy of **Balatro** you already ow
 
 ## How it works
 
+<img align="right" src="docs/assets/gameplay.gif" alt="BalatROM gameplay" width="240">
+
 1. **Download the app** for Mac or Windows.
 2. **Open it.** It finds your Balatro install automatically.
 3. **Click Build.** A couple of minutes later you have a `.gbc` file.
 4. **Play it** in your favorite Game Boy Color emulator.
 
 The full walkthrough is in the [install guide](INSTALL.md).
+
+<br clear="right">
 
 ## What you need
 
