@@ -14,6 +14,8 @@
   <a href="https://github.com/1kuna/balatrom/issues">Report a bug</a>
 </p>
 
+<p align="center">If you like it, a ⭐ helps other people find it.</p>
+
 ---
 
 BalatROM is a free fan project that turns the copy of **Balatro** you already own into a native **Game Boy Color** game. No ROM gets downloaded or shared. The app reads your own install and builds everything locally.
