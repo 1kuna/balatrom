@@ -1,0 +1,42 @@
+#include "game.h"
+#include <stddef.h>
+typedef struct {
+ uint8_t phase, ante, blind, hands, discards, hand_count, deck_pos;
+ uint8_t focus, joker_count, jokers[5], shop[2];
+ int32_t money;
+ uint16_t seed;
+ GbNum score, target, last_score;
+ GbNum last_chips, last_mult;
+ uint8_t last_hand;
+ Card deck[DECK_CAP], hand[HAND_STORAGE_CAP];
+ GbNum joker_state[5];
+ uint16_t hand_levels[12];
+ uint8_t deck_count, draw_order[DECK_CAP];
+ uint8_t shop_kind[2], consumable_count, consumable_kind[2], consumables[2];
+ uint8_t ui_mode, consumable_focus, pack_ids[5], pack_count, pack_choices, pack_kind, pack_size[2], pack_bought[2];
+ uint8_t boss_id,numeric_error,joker_debuff;
+ uint8_t boss_disabled, boss_first_hand, boss_flipped, ectoplasm_used;
+ int16_t hand_size;
+ uint16_t boss_seen_hands, forced_card_uid;
+ uint8_t joker_edition[5], joker_eternal[5], joker_sell[5];
+ uint8_t last_consumable_kind,last_consumable_id, gros_michel_extinct;
+ uint16_t joker_uid[5],next_joker_uid;
+ uint8_t hands_max,discards_max;
+ uint16_t probability_normal;
+ uint16_t selected_uids[HAND_PLAY_CAP];
+ uint8_t highlighted_count;
+ uint8_t ox_target_hand,boss_uses[30];
+ uint16_t next_card_uid;
+ uint8_t joker_focus,joker_grab;
+ uint16_t hands_played[12], hands_this_round[12];
+ uint16_t used_planet_mask;
+ uint8_t discards_used;
+ uint8_t shop_pack_kind[2],first_shop_buffoon,pack_offer_focus;
+ uint8_t pack_item_kind[5];
+ Card pack_cards[5];
+ uint16_t starting_deck_size;
+ GbNum tarot_uses,joker_extra_value[5];
+ uint16_t price_inflation;
+ uint8_t price_discount_percent;
+} LegacyInventoryState;
+typedef char legacy_inventory_size[(sizeof(LegacyInventoryState)==4659u)?1:-1];

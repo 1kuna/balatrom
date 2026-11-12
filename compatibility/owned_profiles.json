@@ -1,0 +1,11 @@
+{
+  "profiles": [
+    {
+      "id": "steam-1.0.1o",
+      "engine_manifest_sha256": "1de3844779cfcdea11b719685cf6e17944318016b5059a7e132192c2456139a3",
+      "archive_sha256": "48c7a0791796a969d2cd0891ebdc9922b2988eb5aaad8ad7a72775a02772e24e",
+      "archive_manifest_sha256": "ae73502735ee949d8c74243469dee48663e4f52d4c6f9bdd61f81419d4cd5a2c",
+      "expected_ROM_sha256": "9f30e154e07e24085e0d0d106ed876df0cc29e9a517aa97cf75abc1a05972d01"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "balatrom-desktop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build a Game Boy Color ROM from your own Balatro installation",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test test/*.test.cjs",
+    "package:plan": "node package-app.cjs --plan"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "electron": "45.0.0"
+  },
+  "license": "MIT"
+}

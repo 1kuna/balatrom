@@ -1,0 +1,38 @@
+{
+  "Version": "1.0.0",
+  "AppFolder": "1.0.0",
+  "Components": [
+    {
+      "Name": "electron",
+      "Url": "https://github.com/electron/electron/releases/download/v45.0.0/electron-v45.0.0-win32-x64.zip",
+      "Bytes": 158223852,
+      "Sha256": "ae53887a23bb640369c93dbd38c408a2af5c0deb86f2fa76c6c244cb444b7f47",
+      "Destination": "",
+      "ArchiveFile": "electron-v45.0.0-win32-x64.zip"
+    },
+    {
+      "Name": "python",
+      "Url": "https://www.python.org/ftp/python/3.13.17/python-3.13.17-embed-amd64.zip",
+      "Bytes": 11441267,
+      "Sha256": "9e35319bffedab8b36ad44d8f377cb4f1733bcec257a0b6d04d94f01486ddb38",
+      "Destination": "resources/worker/",
+      "ArchiveFile": "python-3.13.17-embed-amd64.zip"
+    },
+    {
+      "Name": "pillow",
+      "Url": "https://files.pythonhosted.org/packages/a6/9b/7a58e61d62be561da3a356fe2384d4059a6345fc130e23ef1c36a5b81d24/pillow-12.3.0-cp313-cp313-win_amd64.whl",
+      "Bytes": 7239691,
+      "Sha256": "1cca606cd25738df4ed873d5ad46bbdb3d83b5cbca291f6b4ff13a4df6b0bbe8",
+      "Destination": "resources/worker/",
+      "ArchiveFile": "pillow-12.3.0-cp313-cp313-win_amd64.whl"
+    },
+    {
+      "Name": "gbdk",
+      "Url": "https://github.com/gbdk-2020/gbdk-2020/releases/download/4.5.0/gbdk-win64.zip",
+      "Bytes": 8636233,
+      "Sha256": "266854ce92e3064871c5b28cd3436cc2a6cb136af9e7cf617140108f8c1c5890",
+      "Destination": "resources/worker/backend/bundled-tools/",
+      "ArchiveFile": "gbdk-win64.zip"
+    }
+  ]
+}

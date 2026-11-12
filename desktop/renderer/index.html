@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>BalatROM</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <span class="mark" aria-hidden="true"></span>
+    <span class="name">BalatROM</span>
+  </header>
+
+  <main>
+    <div class="rows">
+      <section class="row" id="game" aria-labelledby="game-title">
+        <svg class="icon card" viewBox="0 0 28 36" aria-hidden="true" focusable="false">
+          <rect class="face" x="3.75" y="2.75" width="20.5" height="30.5" rx="3.25"/>
+          <path class="pip" d="M14 11.5 19 18l-5 6.5L9 18z"/>
+        </svg>
+        <div class="copy">
+          <div class="line"><h2 id="game-title">Looking for Balatro…</h2></div>
+          <p id="game-detail" class="sub selectable"></p>
+        </div>
+        <button id="locate" class="link" type="button" aria-label="Change game location" hidden>Change…</button>
+      </section>
+
+      <section class="row" id="rom" aria-labelledby="rom-title">
+        <svg class="icon cart" viewBox="0 0 28 36" aria-hidden="true" focusable="false">
+          <path class="shell" d="M5.5 2.75h14.25l3.75 3.75v25.25a1.5 1.5 0 0 1-1.5 1.5h-16a1.5 1.5 0 0 1-1.5-1.5V3.75a1 1 0 0 1 1-1z"/>
+          <rect class="label" x="8" y="7.5" width="12" height="11" rx="1.5"/>
+          <path class="pins" d="M9 27.5v3M12.33 27.5v3M15.67 27.5v3M19 27.5v3"/>
+        </svg>
+        <div class="copy">
+          <div class="line"><h2 id="rom-title">ROM</h2><span id="time" class="time" title="Build time"></span></div>
+          <div id="meter" class="meter" role="progressbar" aria-labelledby="rom-title" aria-valuemin="0" hidden><div id="fill" class="fill"></div></div>
+          <p id="rom-detail" class="sub selectable">Not built</p>
+        </div>
+      </section>
+    </div>
+
+    <details id="details" class="details" hidden>
+      <summary>Details</summary>
+      <pre id="details-text"></pre>
+    </details>
+  </main>
+
+  <footer class="actions">
+    <p id="hint" class="hint"></p>
+    <button id="secondary" class="secondary" type="button" hidden></button>
+    <button id="primary" class="primary" type="button" disabled>Build ROM</button>
+  </footer>
+
+  <p id="live" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
