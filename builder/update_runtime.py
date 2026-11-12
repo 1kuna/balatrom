@@ -1,4 +1,4 @@
-"""Consumer backend adapter. Native execution remains a qualification gate."""
+"""Run the build worker for the desktop app."""
 from __future__ import annotations
 import os
 from pathlib import Path
@@ -86,7 +86,7 @@ def build_adapter(lcc: Path, progress=lambda message: None, *, workers=2, cache_
                     break
                 except subprocess.TimeoutExpired:
                     if failed_at is not None and time.monotonic()-failed_at>=FAILED_SHUTDOWN_GRACE_SECONDS:
-                        # Reviewed worker signals failure after build cleanup unwinds.
+                        # The worker reports failure after build cleanup unwinds.
                         # Reap only this owned supervisor before allowing a safe retry.
                         process.terminate()
                         try:code=process.wait(timeout=2)

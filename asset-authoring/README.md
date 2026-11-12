@@ -1,11 +1,10 @@
 # Native assets
 
-The BalatROM title and compact/regular fonts are original project assets. Their
-geometric wordmark and explicit 3×5 / 5×7 cell recipes are in `tools/generate_title.py`
-and `tools/generate_fonts.py`. They read no retail image, external font or game
-archive. `tools/regenerate_ui_labels.py` draws those glyphs into the existing
-native panel geometry. `desktop/make-icon.py` separately defines the app's
-original geometric card monogram.
+The BalatROM title and both fonts (3×5 and 5×7) are original. The wordmark and
+every glyph are drawn cell by cell in `tools/generate_title.py` and
+`tools/generate_fonts.py`; neither reads a game image, font file or archive.
+`tools/regenerate_ui_labels.py` draws those glyphs into the existing UI panels,
+and `desktop/make-icon.py` draws the app icon.
 
 Generate title or font previews with Python and Pillow:
 
@@ -16,11 +15,11 @@ python asset-authoring/tools/generate_fonts.py --output /new/font-output
 
 `tools/prepare_overlay.py --source-root /path/to/checkout --output /new/assets`
 regenerates all eight native asset files and the static caption table into a new
-directory. It checks its inputs and refuses to overwrite existing files or edit
-the source tree. A changed asset needs updated source hashes and a fresh ROM
-build; the fixed 1.0.0 ROM hash must not be silently changed.
+directory. It checks its inputs and won't overwrite files or touch the source
+tree. A changed asset needs its source hashes updated and a fresh ROM build, and
+the ROM will no longer match the 1.0.0 hash.
 
 Run `python -m unittest discover -s asset-authoring/tests -v` from the repository
-root. The tests cover tile/map sizes, all seed values, font clipping, highlights,
-UI glyph boundaries, input preservation and generated-file identity. They are
-host tests, not a claim about physical Game Boy timing or game coverage.
+root. The tests cover tile/map sizes, every seed value, font clipping, highlights,
+UI glyph boundaries, input preservation and that generated files match the
+committed ones. They run on the host, not on Game Boy hardware.

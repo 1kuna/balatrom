@@ -1,5 +1,5 @@
 /* Main-thread publication. Boot installs the callback only when
- * PRIVATE_PUB143_NATIVE_TEST is enabled; the default build leaves it disabled.
+ * PRIVATE_PUB143_NATIVE_TEST is defined; engine/manifest.json defines it.
  */
 #include "publication143.h"
 void raster_ferry_window(void) NONBANKED;

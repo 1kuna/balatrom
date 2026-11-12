@@ -11,7 +11,7 @@
    for each eligible evaluation. No callback pointer crosses a bank switch. */
 uint8_t joker_card_mutation_effect(GameState *g,uint8_t id,
  const JokerContext *c,JokerEffect *out,uint8_t roll_ready,uint8_t roll_value) CORE_BANKED;
-/* Native adapter uses game_random's single 16-bit stream, NOT source RNG parity.
+/* Uses game_random's single 16-bit stream, so rolls differ from the desktop game.
    It must run before the ordinary handler in the shared bridge. */
 void joker_card_mutation_game_event(GameState *g,uint8_t id,
  const JokerContext *c,JokerEffect *out) CORE_BANKED;

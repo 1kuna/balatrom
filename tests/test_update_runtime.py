@@ -61,4 +61,4 @@ class RuntimeContracts(unittest.TestCase):
             command=spawn.call_args.args[0]
             self.assertIn(str(source),command);self.assertIn(str(game),command);self.assertNotIn('shell',spawn.call_args.kwargs)
             self.assertEqual(result,output/'linked/balatrom.gbc')
-            # Declared mock only, never a Windows runtime/cancellation claim.
+            # Mocked; does not exercise real Windows cancellation.

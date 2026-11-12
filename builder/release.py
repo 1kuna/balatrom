@@ -1,4 +1,4 @@
-"""Prepare reviewed release metadata locally. This module never publishes."""
+"""Prepare release metadata locally. Never publishes anything."""
 from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 import hashlib
@@ -18,7 +18,7 @@ def manifest_hash(manifest):
 
 def prepare(source: Path, manifest: dict, contract: dict, qc: dict,
             artifacts: dict[str, Path], destination: Path):
-    """QC is an owner-custodied record, not a digital signature. CI cannot author it."""
+    """qc is the maintainer's sign-off record, not a signature. CI can't produce it."""
     version = contract['version']
     key = version_key(version)
     if contract['channel'] not in ('stable', 'preview') or (contract['channel'] == 'stable' and not key[3]):
@@ -27,17 +27,17 @@ def prepare(source: Path, manifest: dict, contract: dict, qc: dict,
         raise UpdateError('Canonical numeric repository identity is required')
     if (qc.get('version') != version or qc.get('decision') != 'approved' or
             qc.get('approver') != 'Zach' or qc.get('source_manifest_sha256') != manifest_hash(manifest)):
-        raise UpdateError('Zach must explicitly approve this exact source candidate')
+        raise UpdateError('Release approval does not match this exact source')
     for gate in ('rights', 'license', 'sanitation', 'source_closure', 'save_preservation', 'hosting', 'gui_dependencies'):
         if qc.get('gates', {}).get(gate) is not True:
-            raise UpdateError('Release gate still open: ' + gate)
+            raise UpdateError('Release check not done: ' + gate)
     rows = []
     for platform in ('mac', 'windows'):
         file = artifacts[platform]
         record = qc.get('personal_tests', {}).get(platform, {})
         if (file.is_symlink() or record.get('tester') != 'Zach' or record.get('result') != 'passed' or
                 not record.get('evidence') or record.get('artifact_sha256') != sha(file)):
-            raise UpdateError('Zach must personally test the exact ' + platform + ' installable artifact')
+            raise UpdateError('The exact ' + platform + ' download must be personally tested')
         rows.append({'platform': platform, 'name': file.name, 'sha256': sha(file), 'bytes': file.stat().st_size})
     for field in ('archive_sha256', 'manifest_sha256'):
         if not SHA.fullmatch(contract['source_install'][field]):
@@ -57,7 +57,7 @@ def prepare(source: Path, manifest: dict, contract: dict, qc: dict,
         file = source.joinpath(*path.parts)
         if (any(parent.is_symlink() for parent in [file, *file.parents] if parent.is_relative_to(source)) or
                 not file.is_file() or file.stat().st_size != row['bytes'] or sha(file) != row['sha256']):
-            raise UpdateError('Source file differs from reviewed manifest: ' + name)
+            raise UpdateError('Source file differs from the manifest: ' + name)
         selected.append((name, file))
     if not {'builder/__main__.py', 'engine/manifest.json', 'compatibility/owned_profiles.json'} <= seen:
         raise UpdateError('Selected manifest lacks required runnable source closure')

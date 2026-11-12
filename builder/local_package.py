@@ -1,4 +1,4 @@
-"""Initial reviewed-source bundle. No GitHub release or network is implied."""
+"""Load the source bundle shipped inside the app. No network access."""
 import json
 from pathlib import Path
 from .update import UpdateError, digest, SHA, MAX_PACKAGE, version_key, verified_bytes
@@ -7,7 +7,7 @@ from .update import UpdateError, digest, SHA, MAX_PACKAGE, version_key, verified
 def load(contract_path: Path):
     value=json.loads(contract_path.read_text())
     if value.get('scope')!='private-reviewed-owned-build' or value.get('schema')!=1:
-        raise UpdateError('Initial source package is not admitted')
+        raise UpdateError('Initial source package is not recognized')
     version_key(value['version'])
     # PyInstaller Mac bundles expose data via internal Frameworks→Resources symlinks.
     resolved_contract=contract_path.resolve(strict=True)

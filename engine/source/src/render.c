@@ -92,7 +92,7 @@ static uint8_t last_score_seen[8];
 static void capture_input_raw(void) NONBANKED {uint8_t now=joypad(),edge=now&~input_held;input_held=now;if((frontend_render_busy&128u)&&(edge&STALE_HAND_KEYS))return;if(edge){if(input_count<16){input_queue[(input_head+input_count)&15]=edge;input_count++;}else frontend_input_overflow=1;}}
 void raster_ferry_window(void) NONBANKED;
 /* Main-only input polling/pop masks IRQs across the SDK joypad read and FIFO
- * write. Use the same native LYC lead window as the qualified WRAM ferries;
+ * write. Use the same native LYC lead window as the WRAM ferries;
  * VBlank capture remains the raw IRQ observer and never waits here. */
 static void capture_input(void){raster_ferry_window();CRITICAL {capture_input_raw();}}
 static void frontend_vblank_capture(void) NONBANKED {capture_input_raw();}
@@ -334,8 +334,8 @@ static void pack_view(const GameState *g,uint8_t focus){uint8_t i,kind;const Car
  if(game_action_error)text(5,15,game_action_error==2?"UNSUPPORTED LIMIT":"SELECT TARGETS / NO ROOM",15,0);chrome_command(FP_CHROME_PACK,0,1);if(g->hand_count&&(g->pack_kind==ITEM_TAROT||g->pack_kind==ITEM_SPECTRAL))text(5,17,"UP TARGET CARDS",15,0);}
 
 #endif
-/* Condensed rules below follow this frozen core's boss.c; optional bosses
- * require an authoritative rule adapter before a detailed description. */
+/* Condensed rules below follow boss.c; optional bosses need a rule
+ * adapter before they get a detailed description. */
 static HandPreview current_preview;
 static uint8_t preview_hud_start,action_hud_start;
 static void action_buttons(uint8_t selected,uint8_t discards){heading(4,16,"PLAY",7,selected?2:0);text(8,16,"START",3,selected?2:0);heading(11,16,"DISCARD",9,selected&&discards?1:0);text(18,16,"B",2,selected&&discards?1:0);}
@@ -417,7 +417,7 @@ static void draw_hand(const GameState *g,uint8_t focus,uint8_t selected){uint8_t
 
  cached_focus=focus;cached_selected=selected;hand_dirty=0;
 }
-/* legacy PACK input receipt. On A/B/START in the pack the
+/* legacy PACK press feedback. On A/B/START in the pack the
  * gold focus arrow becomes three dots ("checking", as on the TABLE) within a
  * frame; Tarot/Spectral use and pack close can take ~1s of game logic. Built
  * from the real arrow art (its background code + its ink code). The next
@@ -513,8 +513,8 @@ void render_game_banked(const GameState *g,uint8_t focus,uint8_t selected) BANKE
  }else if(g->phase==PHASE_WIN){phase_rule(5,5,15);phase_rule(5,12,15);chrome_command(FP_CHROME_BLIND_WIN,0,0);chrome_command(FP_CHROME_BLIND_WIN,0,1);number(6,9,g->score,12,0);chrome_command(FP_CHROME_BLIND_WIN,0,2);
  }else if(g->phase==PHASE_COMPLETE){phase_rule(5,5,15);phase_rule(5,12,15);chrome_command(FP_CHROME_ANTE8_WIN,0,0);chrome_command(FP_CHROME_ANTE8_WIN,0,1);chrome_command(FP_CHROME_ANTE8_WIN,0,2);
  }else{phase_rule(5,5,15);phase_rule(5,12,15);chrome_command(FP_CHROME_RUN_LOSS,0,0);chrome_command(FP_CHROME_RUN_LOSS,0,1);chrome_command(FP_CHROME_RUN_LOSS,0,2);}
- /* Combined3: original legacy WIN/COMPLETE/LOSS lines restored verbatim as the
-  * ineligible-only fallback; owned-Joker results now take the native ledger. */
+ /* Original legacy WIN/COMPLETE/LOSS lines, kept as the fallback for
+  * ineligible results; results with owned Jokers use the native ledger. */
  done:VBK_REG=0;shop154_commit();SHOW_BKG;DISPLAY_ON;remember(g);if(g->phase==PHASE_TITLE){cached_card_uid[0]=new_run_seed;cached_flags[0]=resume_available;}frontend_render_busy&=128u;
 }
 

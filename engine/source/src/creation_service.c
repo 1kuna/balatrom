@@ -27,7 +27,7 @@ void creation_policy_all_unlocked(CreationPolicy *p) CORE_BANKED {uint8_t id;if(
  * The C uint32 <<5 loop dominated Tarot/Spectral use (~100 frames hashing the
  * GameState twice). Inputs/outputs pass through statics (no ABI assumptions);
  * only WRAM bank1/fixed memory is read, exactly as the C version did.
- * Verified bit-exact in the emulator against a host reference (tools/bot_tarot). */
+ * Output matches the C version bit for bit. */
 static uint16_t hb_ptr,hb_cnt;static uint32_t hb_h;
 static void hb_raw(void) __naked {
  __asm

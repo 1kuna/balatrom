@@ -126,7 +126,7 @@ void joker_effect(GameState *g,uint8_t id,JokerContext *c,JokerEffect *o) CORE_B
    case J_ORDER:if(c->straight)o->xmult_num=3;break;
    case J_TRIBE:if(c->flush)o->xmult_num=2;break;
    /* Score handlers only; these IDs have additional lifecycle/passive hooks.
-      Coverage file expressly excludes full-card implementation. */
+      Their full-card behavior is not implemented. */
    case J_GROS_MICHEL:o->mult_add=15;break;
    case J_CAVENDISH:o->xmult_num=3;break;
    case J_STUNTMAN:o->chips_add=250;break;

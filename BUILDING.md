@@ -1,8 +1,8 @@
 # Building BalatROM
 
-This tree contains the engine inputs distributed in the 1.0.0 app. The build
-also requires a supported local Balatro installation and the pinned compiler;
-game archives, compiler binaries and ROMs are not included.
+This is the source for BalatROM 1.0.0, including the engine sources the app
+ships with. Building the ROM also needs your own copy of Balatro and the pinned
+compiler. Game files, compiler binaries and ROMs are not included.
 
 ## Prerequisites
 
@@ -25,11 +25,11 @@ python -m builder owned-build --game-path /path/to/Balatro.app \
   --engine-packet ./engine --lcc /path/to/gbdk/bin/lcc --output ./build/rom
 ```
 
-On Windows, select the installed `Balatro.exe` and `lcc.exe` instead. The official
-Windows SDCC executable is replaced in a temporary tool copy by a separately
-verified compiler built from revision 15267. Its required hash and source/build
-references are in `notices/reproducible-sdcc/SOURCE-CORRESPONDENCE.json`; compiler
-binaries are not stored in this repository.
+On Windows, pass the installed `Balatro.exe` and `lcc.exe` instead. The builder
+swaps the official Windows SDCC executable for one rebuilt from revision 15267,
+in a temporary copy of the tools. That compiler's hash and source/build references
+are in `notices/reproducible-sdcc/SOURCE-CORRESPONDENCE.json`; the binary itself
+is not in this repository.
 
 The result goes to `build/rom/linked/balatrom.gbc`. Version 1.0.0 must have SHA-256
 `9f30e154e07e24085e0d0d106ed876df0cc29e9a517aa97cf75abc1a05972d01`.
@@ -46,14 +46,15 @@ node --test test/*.test.cjs
 
 The older Qt GUI tests also need PySide6-Essentials 6.11.2 and shiboken6 6.11.2;
 Qt is not part of the released Electron app. Windows process and installer tests
-need Windows. The save integration test skips unless its separately supplied
-local fixture library is selected; no game fixtures are included here.
+need Windows. The save integration test is skipped unless
+`BALATROM_PRIVATE_FIXTURE_LIBRARY` points to a folder of real save fixtures; none
+are included here.
 
 ## Package the Mac app
 
-First verify the ROM build above. You also need Node.js 22+,
+Get the ROM build above working first. You also need Node.js 22+,
 Electron 45.0.0, PyInstaller 6.22.3 and a Python environment with Pillow 12.3.0.
-The visible app is `desktop/`; the Python worker runs the same builder as the CLI.
+The app UI is in `desktop/`; its Python worker runs the same builder as the CLI.
 
 Commit the source to be packaged. From the repository root, using the same Python
 environment as the CLI build, run:
@@ -80,8 +81,9 @@ an existing Electron 45.0.0 runtime may replace the final argument, with its
 only Git-tracked files. Its contract records the app version, supported game
 hashes, expected ROM hash and save compatibility and is bound to that exact ZIP.
 
-These steps create `build/macos/BalatROM.app`, a local development app. Developer ID signing and notarization
-are separate release steps; no signing credentials or profiles belong in Git.
+These steps create `build/macos/BalatROM.app`, a local development build.
+Developer ID signing and notarization are separate release steps; signing
+credentials and profiles never go in Git.
 
 ## Package the Windows installer
 
@@ -106,14 +108,15 @@ System.Net.Http, System.Runtime.Serialization, System.IO.Compression and
 System.IO.Compression.FileSystem. The .NET compiler flags are `/target:winexe
 /platform:x64 /optimize+ /deterministic+ /debug- /langversion:7.3`.
 
-The existing desktop packager also supports `--platform win32 --plan`. Its native
-assembly requires a hash-bound Windows worker/flow test result. This checkout
-does not yet contain a complete Windows installer packaging recipe. In particular,
-the shipped Windows launch path needs embedded Python, `bootstrap.py`, the
-`backend/` tree and bundled tools; the Mac PyInstaller worker alone does not
-supply that layout. Reconstructing that payload and generating its final manifest,
-resource hashes and compiler inputs requires additional packaging tooling and
-native Windows verification. No Windows package has been built from this tree.
+The desktop packager also accepts `--platform win32 --plan`, but assembling a
+Windows app needs a passing Windows worker/flow test result for that exact worker.
+
+The Windows packaging tooling is incomplete. The shipped Windows app launches
+through an embedded Python with `bootstrap.py`, a `backend/` tree and bundled
+tools, and the Mac PyInstaller worker doesn't produce that layout. Rebuilding
+that payload and generating its final manifest, resource hashes and compiler
+inputs still needs more tooling and testing on Windows. No Windows package has
+been built from this tree.
 
 ## What the app and installer do
 
@@ -142,16 +145,16 @@ Full URLs, download sizes, SHA-256 hashes and extraction destinations are in
 Setup verifies pinned lengths and SHA-256 hashes before extraction, checks every
 application file, and opens `BalatROM.exe`. The existing 1.0.0 installer code uses
 `%LOCALAPPDATA%\BalatROM\WindowsTest\apps\1.0.0` for the app and a sibling
-`downloads` folder for its cache. That historical folder name is part of the
-current installer behavior. A damaged existing folder is preserved before repair.
+`downloads` folder for its cache. The `WindowsTest` name is historical; the
+installer still uses it. A damaged existing folder is kept aside before repair.
 Setup requests ordinary user privileges; it does not install a system service,
 change security settings or add PATH entries.
 
 The app keeps versions, build tools, compiler cache and logs under its existing
 user-data folder: `~/Library/Application Support/BalatROM Builder Preview 0.3.5-rc.8/`
 on Mac and `%APPDATA%\BalatROM Builder Preview 0.3.5-rc.8\` on Windows. The old
-folder name preserves existing installations. Export writes the ROM only to the
-path you select and asks before overwriting an existing file.
+folder name keeps existing installs working. Export writes the ROM only to the
+path you choose and asks before overwriting a file.
 
 See [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) for dependency licenses and
 compiler-source delivery requirements.

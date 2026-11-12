@@ -1,4 +1,4 @@
-"""Private bounded phase/worker trace; factual progress, never an estimated percent."""
+"""Build progress events: real counts only, never an estimated percent."""
 import contextvars
 import json
 import os

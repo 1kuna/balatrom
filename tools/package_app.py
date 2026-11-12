@@ -1,4 +1,4 @@
-"""Native-host packaging proposal: no dependency install/sign/upload/publication."""
+"""Legacy Qt app packaging (retired). Installs, signs and uploads nothing."""
 import argparse
 import hashlib
 import importlib.metadata
@@ -13,10 +13,10 @@ def mac_metadata(record):
     candidate = record.get("candidate", {})
     version = candidate.get("version", "")
     if not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+(?:-rc\.[0-9]+)?", version):
-        raise ValueError("Exact candidate version is required")
+        raise ValueError("Exact version is required")
     minimum = candidate.get("minimum_macos", "")
     if not re.fullmatch(r"[0-9]+\.[0-9]+(?:\.[0-9]+)?", minimum):
-        raise ValueError("Exact dependency-qualified macOS minimum is required")
+        raise ValueError("Exact minimum macOS version is required")
     base = version.split("-")[0]
     return {"CFBundleShortVersionString": base, "CFBundleVersion": base,
             "LSMinimumSystemVersion": minimum, "BalatROMCandidateVersion": version}
@@ -43,7 +43,7 @@ def data_hashes(root):
 def verify_data_files(root, record):
     actual = data_hashes(root)
     if not actual or actual != record.get('data_hashes'):
-        raise ValueError('Package notices/documents differ from reviewed data hashes')
+        raise ValueError('Package notices/documents differ from pinned hashes')
     return actual
 
 

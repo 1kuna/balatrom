@@ -125,7 +125,7 @@ m=json.loads((r/'metadata.json').read_text());library.apply(m,approved=True,game
  def test_actual_a6_carried_save_record_exports_and_missing_flag_fails_closed(self):
   import shutil,hashlib
   configured=os.environ.get('BALATROM_PRIVATE_FIXTURE_LIBRARY')
-  if not configured:self.skipTest('private genuine-fixture integration: set BALATROM_PRIVATE_FIXTURE_LIBRARY explicitly; no fixture is bundled')
+  if not configured:self.skipTest('needs real save fixtures: set BALATROM_PRIVATE_FIXTURE_LIBRARY (none are included)')
   original=Path(configured).expanduser()
   if not original.is_absolute():self.fail('BALATROM_PRIVATE_FIXTURE_LIBRARY must be an absolute path')
   self.assertTrue((original/'state.json').is_file());state=json.loads((original/'state.json').read_text());version=state['active'];dest=self.lib.root/('v'+version);dest.mkdir()

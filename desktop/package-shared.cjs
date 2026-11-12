@@ -21,14 +21,14 @@ function installResources(plan,source=__dirname){
  return resources;
 }
 function assemble(plan,{qualification}={}){
- if(plan.platform!==process.platform)throw Error('Native packaging requires the matching authorized OS host; --plan is source preparation only.');
+ if(plan.platform!==process.platform)throw Error('Native packaging must run on the matching OS; --plan only prepares sources.');
  if(fs.existsSync(plan.output))throw Error('Refusing to replace an existing output.');
  const executable=path.join(plan.workerDir,plan.layout.worker);
  if(!fs.statSync(executable).isFile())throw Error('Frozen worker missing.');
  if(plan.platform==='win32'){
   const sha=crypto.createHash('sha256').update(fs.readFileSync(executable)).digest('hex');
   if(!qualification||qualification.status!=='PASS_NATIVE_WINDOWS_WORKER'||qualification.worker_sha256!==sha||qualification.native_flow_verified!==true)
-   throw Error('Windows native worker/flow qualification receipt is required; Mac tests do not qualify Windows.');
+   throw Error('A passing Windows worker/flow test result is required; Mac tests do not cover Windows.');
  }
  validateSymlinkClosure(plan.runtime);validateSymlinkClosure(plan.workerDir);
  copyClosedTree(plan.runtime,plan.output);

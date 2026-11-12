@@ -1,7 +1,7 @@
 """Opt-in GitHub updates. Staged local builds; never download a playable ROM.
 
-The HTTPS GitHub account is the trust authority. Asset digests prove integrity,
-not an independent signing identity. No tokens, telemetry or automatic installs.
+Trust rests on the GitHub account over HTTPS. Asset digests check integrity;
+they are not a separate signature. No tokens, telemetry or automatic installs.
 """
 from __future__ import annotations
 
@@ -202,11 +202,11 @@ def discover(current: str, channel: str = "stable", *, reader: Callable[..., byt
     cancel = cancel or threading.Event()
     now = now or datetime.now(timezone.utc)
     if type(repository_id) is not int or repository_id <= 0:
-        raise UpdateError("Release repository identity has not been qualified for this app")
+        raise UpdateError("Release repository identity is not pinned for this app")
     identity = parse_json(reader(REPOSITORY_API, MAX_JSON, cancel))
     if (not isinstance(identity, dict) or identity.get("id") != repository_id or
             identity.get("full_name", "").casefold() != REPOSITORY.casefold()):
-        raise UpdateError("Release repository identity changed; owner review is required")
+        raise UpdateError("Release repository identity changed; updates are blocked")
     endpoint = API + ("/latest" if channel == "stable" else "?per_page=100")
     try:
         raw = parse_json(reader(endpoint, MAX_JSON, cancel))
@@ -424,7 +424,7 @@ class Updater:
                         raise UpdateError("Save changed while reading; close the emulator and retry")
                     if not new_save and metadata["save"].get("header_versions"):
                         if len(save) < 8 or save[:3] != b"NBG" or save[3] not in metadata["save"]["header_versions"]:
-                            raise UpdateError("Save header version is not qualified")
+                            raise UpdateError("Save header version is not supported")
                         size = int.from_bytes(save[4:6], "little")
                         if size > len(save) - 8:
                             raise UpdateError("Save payload is truncated")
@@ -518,11 +518,11 @@ class Updater:
         target.parent.resolve(strict=True)
         record = state["versions"][state["active"]]
         if save_adapter and save_adapter != "pyboy":
-            raise UpdateError("No qualified save export adapter for this loader")
+            raise UpdateError("No supported save export adapter for this loader")
         if save_adapter and not isinstance(record.get("save"), dict):
             raise UpdateError("Retained save metadata is missing or invalid; keep the original ROM/save and restore a verified receipt")
         if save_adapter and save_adapter not in record["save"].get("export_adapters", []):
-            raise UpdateError("This release has not qualified that save export adapter")
+            raise UpdateError("This release does not support that save export adapter")
         if not isinstance(record.get("carried_save"), bool):
             raise UpdateError("Retained save provenance is missing; keep the original ROM/save and restore a verified receipt before export")
         companion = (Path(str(target) + ".ram") if save_adapter == "pyboy" else target.with_suffix(".save-backup")) if record["carried_save"] else None

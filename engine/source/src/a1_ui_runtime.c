@@ -12,9 +12,9 @@ uint8_t native_ui_rows(uint8_t,uint8_t,uint8_t,uint8_t,const A1Text*,uint8_t,uin
 uint8_t a1_text_width(const char *s,uint8_t font) BANKED {
  uint8_t n=strlen(s);return n?n*(font==5u?6u:4u)-1u:0u;
 }
-/* The existing numeric adapter remains the authority. Integer adapter
- * overflow uses a visibly scientific leading digit, with the fuller adapter
- * output separately shown in the public detail pane. No truncation-as-exact. */
+/* Values come from the existing numeric adapter. On integer overflow the
+ * field shows a scientific leading digit and the detail pane shows the
+ * fuller value. A truncated number is never shown as exact. */
 uint8_t a1_number_text(const void *v,uint8_t size,char out[16],uint8_t width,uint8_t big) BANKED {
  uint8_t n,max;
  frontend_format_number(v,size,out);n=strlen(out);

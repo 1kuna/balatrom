@@ -1,8 +1,8 @@
 """Conservative compiler concurrency from local CPU/RAM, without a process census.
 
 Available memory is a snapshot, not a guarantee. Failed/unknown measurements
-fall back to one worker. These thresholds reserve headroom; they are not minimum
-hardware requirements or claims about the speed of an untested computer.
+fall back to one worker. These thresholds leave headroom; they are not minimum
+hardware requirements.
 """
 import ctypes
 import os

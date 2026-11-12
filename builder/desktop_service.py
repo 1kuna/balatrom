@@ -1,7 +1,7 @@
 """Private stdio service for the desktop shell; never opens a listening socket.
 
-The shell supplies only explicit user-selected paths. Owned-install admission,
-source verification, tool acquisition and atomic export remain in the backend.
+The shell supplies only paths the user selected. Install checks, source
+verification, tool downloads and atomic export stay in the backend.
 """
 from __future__ import annotations
 
@@ -84,7 +84,7 @@ class Service:
                 actual_input = fingerprint(self.game)
                 if not matches(actual_input, metadata['source_install']):
                     raise update.UpdateError('The selected Balatro installation changed or is unsupported.')
-                # Preserve the real Windows fused-file identity in the build receipt.
+                # Record the real Windows fused-file identity in the build receipt.
                 metadata = dict(metadata, source_install=actual_input)
                 state = self.library.state()
                 if state.get('active') == metadata['version']:

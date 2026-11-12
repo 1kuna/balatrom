@@ -1,7 +1,7 @@
-"""Portable separated-source compile/link contract, initially synthetic only.
+"""Compile/link contract for separated sources, used by the synthetic fixture.
 
-No game engine or content payload is bundled. Source roles/hash bindings and
-object order are explicit. Faithful admission is deliberately unavailable.
+No game engine or content payload is bundled. Source roles, hashes and object
+order are explicit. Real ROM builds go through owned_install.py instead.
 """
 from pathlib import Path
 import json
@@ -28,7 +28,7 @@ def validate_contract(contract):
     from .profiles import exact_keys, integer
     exact_keys(contract, ("schema", "purpose", "sources", "objects", "include_dirs", "rom", "budgets"))
     if contract["schema"] != 1 or contract["purpose"] != "synthetic-abi":
-        raise InputError("Only synthetic ABI linking is admitted; faithful linking remains unavailable")
+        raise InputError("Only synthetic ABI linking is supported here")
     exact_keys(contract["rom"], ("title", "banks"))
     if not isinstance(contract["rom"]["title"], str) or not re.fullmatch(r"[A-Z0-9_]{1,15}", contract["rom"]["title"]):
         raise InputError("Invalid synthetic ROM title")
@@ -56,7 +56,7 @@ def validate_contract(contract):
         if not isinstance(entry["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", entry["sha256"]):
             raise InputError("Invalid contract source hash")
         if not isinstance(entry["role"], str) or entry["role"] not in ROLES:
-            raise InputError("Unreviewed/unknown source origin is not admitted")
+            raise InputError("Unknown source origin")
         inputs = entry["input_members"]
         if not isinstance(inputs, dict) or any(not isinstance(k, str) or not re.fullmatch(r"[0-9a-f]{64}", str(v)) for k, v in inputs.items()):
             raise InputError("Invalid source lineage binding")
@@ -106,7 +106,7 @@ def snapshot_sources(root, contract):
                 if not any(relative(dependency) in expected for dependency in candidates):
                     raise InputError("Include dependency is outside source manifest")
             elif not system or system[1] not in {"gb/gb.h", "gb/cgb.h", "stdint.h", "string.h"}:
-                raise InputError("Unreviewed system/macro include")
+                raise InputError("Unexpected system/macro include")
         snapshots[name] = data
     return snapshots
 

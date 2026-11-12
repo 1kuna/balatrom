@@ -2,8 +2,8 @@
 #ifndef CONSUMABLES_H
 #define CONSUMABLES_H
 #include "game.h"
-/* IDs exactly reference/catalog.json Tarot/Planet/Spectral order. Worker owns
- this implementation only; unsupported=0, supported/applicable=1. Conditions
+/* IDs follow the game's Tarot/Planet/Spectral catalog order. Returns
+ unsupported=0, supported/applicable=1. Conditions
  are enforced before consuming the inventory card. Selected bits target hand.
  All mutation cards preserve uid; sync after applies persistent master updates. */
 uint8_t consumable_apply(GameState *g,uint8_t kind,uint8_t id) CORE_BANKED;

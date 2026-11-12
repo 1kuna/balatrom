@@ -1,8 +1,8 @@
-"""Optional local compiler-result cache; never substitutes owned-input verification.
+"""Optional local cache of compiler output. It never replaces input verification.
 
 A context binds every reconstructed source/header, every SDK file, flags, bank
 assignment and host ABI. Cache bytes are checked on every read. The caller still
-links in descriptor order and admits only the registered exact ROM hash.
+links in descriptor order and accepts only the expected ROM hash.
 """
 from pathlib import Path
 import hashlib

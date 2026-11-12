@@ -46,7 +46,7 @@ for(const platform of ['darwin','win32']){
   h.dialog.showSaveDialog=async()=>({canceled:true});await h.call('export');assert.equal(c.commands.length,1);
  });
 }
-for(const platform of ['darwin','win32'])test(`${platform}: broken connection fails closed and can reconnect`,async()=>{
+for(const platform of ['darwin','win32'])test(`${platform}: broken connection stops safely and can reconnect`,async()=>{
  const h=await harness(platform);await h.call('discover');const old=h.children[0];
  old.stdin.emit('error',Error('closed'));await h.call('discover');const next=h.children[1];
  await h.reply(next,{type:'discovery',status:'supported',path:'owned'});old.emit('exit',1);

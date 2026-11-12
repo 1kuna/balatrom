@@ -1,7 +1,7 @@
-"""Structural existing-sidebar contract, with no art/text bytes or release claim.
+"""Symbol and size contract for the existing sidebar data; no art or text.
 
-Matching lengths/names does not validate retail crop order or scene fidelity.
-These interfaces were checked against sidebar_jokers.h and sidebar_items.h.
+Matching names and lengths doesn't check crop order or how the scene looks.
+Mirrors sidebar_jokers.h and sidebar_items.h.
 """
 from .archive import InputError
 

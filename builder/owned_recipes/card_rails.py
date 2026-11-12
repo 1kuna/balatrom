@@ -109,7 +109,7 @@ def native_row(face, row):
     a = 8 | (3 + group); court = rank >= 10
     if row == 0: return [(11 + rank, a), (1, a), (2, a | 0x20)]
     if row == 1: return [(24 + group, a), (36 if court else 28 + group, a), (9, a | 0x20)]
-    # Rev3 (visual review): no rotated bottom index. A rotated 9 peeking under a
+    # No rotated bottom index: a rotated 9 peeking under a
     # raised neighbour read as "6"; bottom-right is now the plain frame (as face 54).
     if row == 2: return [(9, a), ((37 if court else 32) + group, a), (9, a | 0x20)]
     return [(2, a | 0x40), (1, a | 0x40), (2, a | 0x60)]

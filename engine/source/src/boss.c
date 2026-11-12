@@ -10,7 +10,7 @@
 #ifdef BOSS_ENABLE_OPTIONAL
 #include "boss_optional.h"
 #endif
-/* ID order is catalog.json order, NOT game.lua's `order` field. */
+/* ID order is the catalog order, NOT game.lua's `order` field. */
 #define OX 2
 #define MOUTH 4
 #define CLUB 6

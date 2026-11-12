@@ -12,8 +12,8 @@ import hashlib
 import json
 from pathlib import Path
 
-# Native cell artwork authored for this replacement. Rows are explicit binary
-# masks, not extracted from the old title, a retail archive, or a font.
+# Title artwork. Rows are hand-drawn binary masks, not taken from the old
+# title, the game files or a font.
 FONT = {
     " ": [0,0,0,0,0,0,0],
     "A": [14,17,17,31,17,17,17], "B": [30,17,17,30,17,17,30],
@@ -82,8 +82,8 @@ def tile(pic, tx, ty):
 
 def build():
     pic=canvas()
-    # A geometric all-letter wordmark. No ace-card letter, original logo
-    # silhouette, source texture, or copied old-title pixel is reused.
+    # Geometric wordmark built only from letters; nothing from the original
+    # logo or the old title is reused.
     text(pic,"BALATROM",10,26,color=3,sx=3,sy=3,gap=3)
     text(pic,"BALATROM",9,24,color=2,sx=3,sy=3,gap=3)
     # Coral lower face supplies warmth without reproducing the old logo.
@@ -212,7 +212,7 @@ def main():
             "reserved_seed_tiles":[207,208,209],"loaded_tiles":122,"map":[20,18],
             "palettes":3,"resume_patch_entries":7,"input_asset_files":[],
             "title_sha256":hashlib.sha256(content.encode()).hexdigest(),
-            "visual_check":"Source previews only; target-native gameplay qualification required."}
+            "visual_check":"Preview images only; check the title in a built ROM."}
     (args.output/"GENERATION.json").write_text(json.dumps(report,indent=2)+"\n")
     print(json.dumps(report,indent=2))
 

@@ -1,4 +1,4 @@
-"""Routing from declared diagnostic functional scenes and native cache ABI.
+"""Routing tables built from the declared scenes and the native cache ABI.
 
 The nine-state corpus uses synthetic geometric patterns. Routing arrays
 are built from scene keys; no retail art or text is read.

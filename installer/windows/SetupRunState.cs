@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
-// Production lifecycle gate: retry becomes available only after teardown.
+// Setup run state: retry is allowed only after teardown.
 internal sealed class SetupRunState {
  const int Idle=0,Running=1,Succeeded=2,Closed=3;
  int state,generation;

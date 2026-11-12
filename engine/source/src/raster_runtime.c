@@ -680,10 +680,10 @@ void coop_publish_metadata(void) __naked NONBANKED {
 
 void coop_display_off(void) NONBANKED {if(coop_active)coop_lcdc_held&=127u;else display_off();}
 
-/* Private component proof only: NOT installed as a VBlank vector.
- * Arm contract: double speed, SVBK1 stack, LCD/scroll/native owners unchanged,
+/* Standalone component: NOT installed as a VBlank vector.
+ * Arming requires double speed, SVBK1 stack, LCD/scroll/native owners unchanged,
  * live resident TABLE, no generic raster, C0 ordinary OAM base, at most14
- * verified jobs/31 blocks at bank7DC00. Main maintains old display to commit.
+ * checked jobs/31 blocks at bank7DC00. Main keeps the old display until commit.
  * __shadow_OAM_base stays zero until main finishes copying new OAM to C000.
  */
 #include <gb/gb.h>

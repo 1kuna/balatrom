@@ -1,4 +1,4 @@
-"""User-approved D reduction on quantized colors, not desktop shader parity."""
+"""D reduction on quantized colors; an approximation of the desktop shaders."""
 import colorsys
 def effect_word(word,edition,phase):
  rgb=[(word>>(5*i)&31)/31 for i in range(3)];h,l,s=colorsys.rgb_to_hls(*rgb)

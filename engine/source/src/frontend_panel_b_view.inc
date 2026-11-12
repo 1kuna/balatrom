@@ -1,5 +1,5 @@
 #include "paged_inventory.h"
-/* Pure actual-state projection for the panel B compositor. No palette policy,
+/* Pure projection of the game state for the panel compositor. No palette policy,
  * drawing, rules, RNG, saves, global caches, or copied GameState. */
 #ifndef FRONTEND_PANEL_B_VIEW_INC
 #define FRONTEND_PANEL_B_VIEW_INC
@@ -46,8 +46,8 @@ static uint8_t panel_b_page(const GameState *g, PanelBPage *out) NONBANKED {
     return 1;
 }
 
-/* Enable entity commands in the compositor/canary, not the legacy renderer
- * checkpoint that currently consumes only panel_b_page. */
+/* Enable entity commands in the compositor, not the legacy renderer,
+ * which currently uses only panel_b_page. */
 #ifdef PANEL_B_ENTITY_VIEWS
 static uint8_t panel_b_card_view(const GameState *g, const PanelBPage *page,
                                uint8_t slot, PanelBCard *out) {

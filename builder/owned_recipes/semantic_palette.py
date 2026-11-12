@@ -1,4 +1,4 @@
-"""Explicit present-behavior RGB555 contract; no historical-origin assertion."""
+"""The RGB555 colors the engine currently uses."""
 
 
 def values() -> list[int]:

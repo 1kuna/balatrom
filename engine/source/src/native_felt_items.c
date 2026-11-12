@@ -75,7 +75,7 @@ static void capture_bg(uint8_t slot,uint16_t at){coop_capture_palette(0u,slot,ra
 uint8_t native_scene_prepare(const GameState *g) BANKED {
  uint8_t ids[5],debuff,i,j,id,kind,chosen=255u,slot=2u,x,phase=(sys_time>>5)&3u;
  debuff=frontend_public_jokers_key(g,ids);
- /* Unqualified markers/hidden classes remain explicit admission gaps. */
+ /* Other markers and hidden classes are deliberately unsupported here. */
  if(g->joker_count>PG_JMAX||g->consumable_count>PG_CMAX)return 0;
  for(i=0;i<g->joker_count&&i<5u;i++)if(ids[i]>=150u&&ids[i]!=255u)return 0;
  if(LCDC_REG&LCDCF_ON){if(LCDC_REG&LCDCF_BG9C00)native_busy_publish();wait_vbl_done();}native_palette_stop();DISPLAY_OFF;

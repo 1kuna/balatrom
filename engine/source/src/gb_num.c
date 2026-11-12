@@ -3,8 +3,7 @@
 #include <string.h>
 static uint8_t wa[16],wb[16],wc[16],wd[16];
 /* byte-granular scans and shifts. Same results as the former
- * bit-at-a-time loops (host differential test: tools/gbnum_diff); scoring spent
- * ~half its time in them. */
+ * bit-at-a-time loops; scoring spent ~half its time in them. */
 static int16_t highest(const uint8_t*a){uint8_t i=16,v,b;while(i){v=a[--i];if(v){b=7;while(!(v&128u)){v<<=1;b--;}return (int16_t)((uint8_t)(i<<3)|b);}}return -1;}
 static uint8_t bit(const uint8_t*a,int16_t i){return i>=0&&i<128?(a[i>>3]>>(i&7))&1:0;}
 static uint8_t any_low(const uint8_t*a,int16_t n){uint8_t i,w,r;if(n<=0)return 0;if(n>128)n=128;w=(uint8_t)n>>3;r=(uint8_t)n&7;for(i=0;i<w;i++)if(a[i])return 1;return r&&(a[w]&(uint8_t)((1u<<r)-1u))?1:0;}

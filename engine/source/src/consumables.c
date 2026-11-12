@@ -193,7 +193,7 @@ uint8_t consumable_apply(GameState *g,uint8_t kind,uint8_t id) CORE_BANKED {
    sync_cards(g,first,1);
    hand_clear(g);
    return 1;
-  default: return 0; /* explicit missing-context effects; see coverage.json */
+  default: return 0; /* effects that need context this build doesn't track */
   }
   if(!card_context_supported(g) || !selection(g,1,n)) return 0;
   for(i=0;i<g->hand_count;i++) if(hand_is_selected(g,i)) {
@@ -309,8 +309,8 @@ uint8_t consumable_apply(GameState *g,uint8_t kind,uint8_t id) CORE_BANKED {
    while(j && uid[j-1]>keep_uid) {uid[j]=uid[j-1];j--;}
    uid[j]=keep_uid;
   }
-  /* Same descending Fisher-Yates draw order as original pseudoshuffle;
-     native 16-bit modulo backend, not Lua randomseed parity. */
+  /* Same descending Fisher-Yates draw order as original pseudoshuffle, but
+     with the native 16-bit modulo RNG, so results differ from Lua's. */
   for(i=g->hand_count-1;i>0;i--) {
    j=game_random_index((i+1));keep_uid=uid[i];uid[i]=uid[j];uid[j]=keep_uid;
   }

@@ -11,8 +11,8 @@
 #include "consumables.h"
 #include "creation_core.h"
 #include <string.h>
-/* Native nonzero16-bit xorshift stream, uniform by rejection. Named desktop
-   stream/seed parity is not represented by GameState. */
+/* Native nonzero16-bit xorshift stream, uniform by rejection. GameState has
+   no equivalent of the desktop game's named seed streams. */
 uint8_t boss_core_random_index(GameState *g,uint8_t count,uint8_t stream) CORE_BANKED {
  uint16_t v,limit;(void)stream;if(g!=&game || !count || !g->seed){g->numeric_error=1;return 255;}
  if(native_rng_mode())return game_random_bounded(count);
@@ -27,7 +27,7 @@ void boss_core_shuffle_jokers(GameState *g) CORE_BANKED {
  uint8_t i,j;if(g!=&game){g->numeric_error=1;return;}
  for(i=g->joker_count;i>1;i--){j=boss_core_random_index(g,i,28);if(g->numeric_error)return;if(j!=i-1){game_move_joker(i-1,j);game_move_joker(j+1,i-1);}}
 }
-/* All current native shop-admitted discard responders are dispatched per card;
+/* Every discard responder the shop can currently offer is dispatched per card;
    remove_card supports future discard destruction without charging resources. */
 uint8_t boss_discard_selected(GameState *g,uint8_t hook) CORE_BANKED {
  Card cards[HAND_PLAY_CAP],destroyed[HAND_PLAY_CAP];uint8_t indices[HAND_PLAY_CAP],n,i,d=0;JokerContext c;

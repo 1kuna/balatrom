@@ -102,7 +102,7 @@ static uint8_t geometry(const GameState *g,uint8_t *first,uint16_t *mask,uint16_
  *expanded=extra?((uint16_t)extra<<13)|(1u<<p):0u;return n;
 }
 /* Cursor position last staged by cursor(); y0 = no cursor. A cooperative
- * render can cancel after staging, so the receipt trusts this home only
+ * render can cancel after staging, so press feedback trusts this home only
  * when the visible sprite0 sits exactly on it or on one of its own leans. */
 static uint8_t cursor_home_x,cursor_home_y;
 static void cursor(uint8_t count,uint8_t pos,uint16_t mask,const uint8_t x[13]){
@@ -357,7 +357,7 @@ static void install(const GameState *g){
  for(id=0;id<A1_RAIL_BACK_COUNT;id++){a1_rail_back_tile_copy(id,raster_pixels);VBK_REG=1;set_bkg_data(A1_RAIL_BACK_BASE+id,1,raster_pixels);raster_capture_inputs();}
  /* under the cooperative redirect set_*_data is BANKED and
   * reads its source after switching ROM banks, so ROM arrays from this bank
-  * arrived as unrelated bank41 bytes (badge/receipt dots never drawn). Copy
+  * arrived as unrelated bank41 bytes (badge/feedback dots never drawn). Copy
   * through RAM first, as native_busy_wait_patterns already does. */
  {static const uint8_t badge[16]={0,255,66,189,36,219,24,231,24,231,36,219,66,189,0,255};memcpy(raster_pixels,badge,16);VBK_REG=1;set_bkg_data(140u,1,raster_pixels);}
  a1_cursor_copy(raster_pixels);VBK_REG=1;set_sprite_data(CURSOR_TILE,2,raster_pixels);
@@ -453,13 +453,13 @@ void native_table_render(const GameState *g) BANKED {
 #undef native_palette_stop
 #undef LCDC_REG
 #define LCDC_REG (*(volatile uint8_t*)0xff40u)
-/* Exact pre-input action receipt; sprite0 OAM shadow only. START/B swap
+/* Press feedback before the action runs; sprite0 OAM shadow only. START/B swap
  * to dots and A dips 2px onto the current card. Direction presses leave the
  * old published caret steady until the complete new card/preview/caret image
  * is published atomically. No guessed destination, separate lean or partial
  * local card-map publication. Mandatory render restores ordinary cursor.
  * A staged-but-cancelled home is still trusted only when the source sprite
- * is exactly at that home or at an existing action-receipt offset. */
+ * is exactly at that home or at an existing feedback offset. */
 extern uint8_t coop_navigation_protected,coop_navigation_clean,coop_navigation_burst;
 void native_table_receipt(const GameState *g,uint8_t pressed) BANKED {
  uint8_t dx,dy;

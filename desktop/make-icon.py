@@ -1,4 +1,4 @@
-"""Original geometric card monogram; no font or retail artwork input."""
+"""Draw the app icon, a geometric card monogram. Uses no font or game art."""
 from pathlib import Path
 from PIL import Image,ImageDraw
 root=Path(__file__).resolve().parent;sizes=[16,32,128,256,512];icons=root/'app.iconset';icons.mkdir(exist_ok=True)

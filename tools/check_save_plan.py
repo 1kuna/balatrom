@@ -13,12 +13,12 @@ def sha(path):
 def check(plan_path: Path, harness: Path):
     plan=json.loads(plan_path.read_text())
     if sha(harness)!=plan['script_sha256']:
-        raise ValueError('Prepared harness hash changed; owner must update plan')
+        raise ValueError('Harness hash changed; update the plan')
     pins=[]
     for row in plan['variants']+plan['fixtures']:
         path=Path(row['path'])
         if not path.is_file() or path.is_symlink() or sha(path)!=row['sha256']:
-            raise ValueError('Pinned disposable authority missing or changed: '+path.name)
+            raise ValueError('Pinned ROM or fixture missing or changed: '+path.name)
         if 'noi_sha256' in row and sha(path.with_suffix('.noi'))!=row['noi_sha256']:
             raise ValueError('Pinned symbols changed: '+path.name)
         pins.append({'name':path.name,'sha256':row['sha256'],'bytes':path.stat().st_size})

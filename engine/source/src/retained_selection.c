@@ -240,7 +240,7 @@ uint8_t retained_selection_bg_guard(uint8_t pair,const uint8_t *planes) BANKED {
  return 1;
 }
 
-/* Private Rev03 canary. Inactive BG writes precede the VBlank commit;
+/* Inactive BG writes precede the VBlank commit;
  * frozen IRQ and bank0 OBJ identities remain unchanged. */
 #define ATOMIC_PHASES 0xda90u
 #define ATOMIC_CONTROL 0xdacfu
@@ -347,8 +347,8 @@ void retained_atomic_full(uint8_t *dirty) BANKED {
 /* Critical caller: transfer800 bytes in VBlank at LY144..149, then thirty
  * 16-byte chunks at fresh mode3->0 edges on lines0..29. The top48 rows
  * are identical across both plans. Restore SVBK1 before stack access and
- * re-enable IRQ before STAT32. Hardware DMA startup/tail bounds remain a
- * separate acceptance obligation; see the exact linked schedule proof. */
+ * re-enable IRQ before STAT32. Hardware DMA startup/tail time is not
+ * counted here. */
 static uint8_t atomic_commit_raw(void) __naked {
  __asm
  ldh a,(0x44)
@@ -505,7 +505,7 @@ uint8_t retained_atomic_publish(const uint8_t *dirty) BANKED {
  wait_vbl_done();raster_capture_inputs();return !raster_fault;
 }
 
-/* Rev03 stable lower physical-slot transaction. Canonical metadata remains
+/* Stable lower physical-slot transaction. Canonical metadata remains
  * distinct from the frozen caret's temporary OAM/plane merge. Slots0..38
  * belong to source objects; slot39 always owns the independent caret. */
 #define SLOT_META 0xd570u
@@ -646,8 +646,8 @@ uint8_t retained_preview_same(const GameState *g,const HandPreview *p,uint8_t pr
  n=strlen(level)+1u;retained_selection_get(7,MODEL+offsetof(Frame,level),(uint8_t *)old,n);return !memcmp(old,level,n);
 }
 
-/* One-use public-mutation certificate, issued only by the audited main-loop
- * boundary before game_input. A raw button byte is FULL_OR_UNKNOWN. No new
+/* One-use public-mutation certificate, issued only by the main loop just
+ * before game_input. A raw button byte is FULL_OR_UNKNOWN. No new
  * mutable storage: retained_pressed carries the ticket until renderer entry.
  * Unknown writers/callers must cancel before mutation; absence is unknown.
  * The complete interval is every game_input->save->render iteration: all other
@@ -782,7 +782,7 @@ void retained_input_begin(const GameState *g,uint8_t key) BANKED {
  retained_selection_invalidate();
 }
 /* Main-loop-only finish, immediately after the unchanged game_input and
- * audio observer. The existing one-use ticket proves the pre-action normal
+ * audio observer. The existing one-use ticket shows the pre-action normal
  * TABLE domain and exact single LEFT/RIGHT/A mask. In the bound core these
  * paths change only focus or selection UIDs/count; IRQ/audio never write
  * GameState. Check the post-domain too. No copied GameState or new mutable

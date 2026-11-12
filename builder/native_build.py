@@ -1,8 +1,8 @@
-"""Compile admitted generated native units, not a complete game or ROM.
+"""Compile the generated native units on their own; this does not build a ROM.
 
-Reproduce source bytes from the same genuine input before using a private
-workspace. A hand-edited receipt is never sufficient compilation admission.
-No original Lua execution, engine fallback, installation or linker step.
+Source bytes are regenerated from the same game input before the workspace is
+used, so a hand-edited receipt can't get code compiled. No Lua is run, and
+nothing is installed or linked.
 """
 from pathlib import Path
 import json
@@ -36,7 +36,7 @@ def compile_native_units(game, workspace, output, compiler, *, profiles=None):
             raise InputError("Native-check game input differs from imported workspace")
         for recipe in profile["recipes"]:
             if recipe["kind"] not in ("native-records", "native-pairs", "native-scenes"):
-                raise InputError("Only banked native ABI recipes are admitted for unit compilation")
+                raise InputError("Only banked native ABI recipes can be compiled as units")
             inputs = {name: archive.read(name) for name in recipe_dependencies(recipe)}
             raw = inputs[recipe["member"]]
             files, details = convert_recipe(raw, recipe, inputs)

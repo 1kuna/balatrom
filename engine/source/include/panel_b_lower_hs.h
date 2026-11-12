@@ -11,12 +11,12 @@
  * returns0 without writing. Complete color/opacity/OAM admission is mandatory.
  * Inputs must already be sanitized public commands; no concealed identity
  * enters profile selection. Current coverage excludes ordinary-face color17.
- * No storage, bank placement, handler timing or caller stack is granted here.
+ * Uses no storage, bank placement, handler timing or caller stack.
  */
 uint8_t pb_lower_hs_profile(uint8_t candidate, uint8_t *ids56) BANKED;
 
 /* Five additional complete policy hints with ordinary-face color17.
- * Their admission scope is the named mixed boundary witnesses only.
+ * They apply only to the mixed boundary cases they were built for.
  * Candidate IDs0..4 are a DISTINCT resource family from the21 HS policies;
  * keys bind the family and all56 bytes, never the ordinal alone.
  */

@@ -19,7 +19,7 @@ typedef struct {
 } JokerMissingEffect;
 void joker_missing(const GameState *g,uint8_t id,const JokerContext *c,
  const JokerMissingContext *x,JokerMissingEffect *out) CORE_BANKED;
-/* Recognition policy only; lead must implement source straight/flush algorithm. */
+/* Policy only; joker_hand_shapes applies it in the straight/flush scan. */
 typedef struct {uint8_t straight_min,flush_min,allow_single_rank_gaps,score_all;} JokerHandPolicy;
 void joker_hand_policy(const GameState *g,JokerHandPolicy *out) CORE_BANKED;
 typedef struct {uint8_t implemented,straight_mask,flush_mask;} JokerHandShapes;

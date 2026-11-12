@@ -7,13 +7,11 @@
 #include "num_extra.h"
 #include <string.h>
 #define FATAL (GBN_DOMAIN|GBN_NAN|GBN_DIVZERO)
-/* gb_num_cmp(v,+0) was used only to reject negative-domain/NaN inputs.
- * Its magnitude-dependent unpack/compare disclosed hidden value timing at
- * the save boundary. Classify the same nonnegative binary64 domain directly:
- * +0, subnormal, finite and +infinity are valid; either sign on NaN and every
- * negative encoding (including -0) are invalid. Fixed straight-line integer
- * work reads all fraction bytes, independent of secret numeric magnitude.
- * No shared numeric scratch is needed and no numeric value is modified. */
+/* Check the nonnegative binary64 domain directly instead of calling
+ * gb_num_cmp(v,+0): +0, subnormal, finite and +infinity are valid; NaN of
+ * either sign and every negative encoding (including -0) are invalid.
+ * Straight-line integer code reads all fraction bytes, needs no shared
+ * numeric scratch and does not modify the value. */
 static uint8_t valid_num(const GbNum *v){
  uint8_t fraction=v->bits[0]|v->bits[1]|v->bits[2]|v->bits[3]|v->bits[4]|v->bits[5]|(v->bits[6]&15u);
  uint16_t exponent=((uint16_t)(v->bits[7]&127u)<<4)|(v->bits[6]>>4);
@@ -21,8 +19,7 @@ static uint8_t valid_num(const GbNum *v){
  uint8_t nonzero=(uint16_t)(0u-fraction)>>15;
  return 1u^((v->bits[7]>>7)|(all&nonzero));
 }
-/* Read/compare both UID bytes before deciding. The old uint16 equality
- * could short-circuit on the first differing byte for valid hidden pairs. */
+/* Read and compare both UID bytes before deciding. */
 static uint8_t uid_distinct(uint16_t a,uint16_t b){
  uint16_t difference=a^b;
  return (uint8_t)difference|(uint8_t)(difference>>8);

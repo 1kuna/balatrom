@@ -199,7 +199,7 @@ class Window(QMainWindow):
         self.import_run.setVisible(self.advanced)
         self.cancel.setVisible(not idle)
         self.check.setEnabled(update.REPOSITORY_ID is not None and idle)
-        self.check.setText("Update" if update.REPOSITORY_ID is not None else "Updates unavailable in private QC")
+        self.check.setText("Update" if update.REPOSITORY_ID is not None else "Updates unavailable in this build")
         self.export.setEnabled(bool(active) and idle)
         self.back.setEnabled(bool(state.get("previous")) and idle)
         if self.initial_contract:
@@ -323,7 +323,7 @@ class Window(QMainWindow):
             if not original:
                 return
             previous_rom = Path(original)
-        # Existing saves require exact old-version provenance and qualified compatibility.
+        # Existing saves need the exact old ROM and a known-compatible version.
         # No migration, emulator save installation, or hardware write is performed here.
         reader = self.local_reader or update.fetch
         def operation(cancel, progress):
@@ -349,7 +349,7 @@ class Window(QMainWindow):
                 if QMessageBox.question(self, "Keep your run", "Export a separate save copy for PyBoy alongside the new ROM? Your original is retained.") == QMessageBox.StandardButton.Yes:
                     adapter = "pyboy"
             self.library.export(Path(path), save_adapter=adapter)
-            self.status.setText("Saved. Open the .gbc in a supported emulator or use a qualified cartridge workflow.")
+            self.status.setText("Saved. Open the .gbc in a Game Boy Color emulator.")
         except (OSError, update.UpdateError) as exc:
             self.status.setText(str(exc))
     def rollback(self):

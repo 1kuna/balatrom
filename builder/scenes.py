@@ -1,7 +1,7 @@
 """Declared native scene keys and dependent atlas tables.
 
 No game text or art is bundled. Text bindings and pixels must be resolved from
-verified private input. This enumerates declared states, not all faithful states.
+verified local input. Only the declared states are enumerated.
 """
 from .archive import InputError
 from .conversion import c_array, load_png, tile_bytes

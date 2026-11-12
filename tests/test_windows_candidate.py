@@ -44,14 +44,14 @@ class PortableWindowsPreparation(unittest.TestCase):
             with self.assertRaisesRegex(OSError,'original assignment error') as caught:ManagedCompiler(['fake'],Path('.'))
         job.close.assert_called_once();self.assertEqual(len(caught.exception.__notes__),2)
 
-    @unittest.skipIf(os.name=='nt','POSIX canary only')
+    @unittest.skipIf(os.name=='nt','POSIX only')
     def test_real_posix_child_capture_still_works(self):
         with ManagedCompiler([sys.executable,'-c','print("canary")'],Path('.')) as process:
             out,err=process.communicate(timeout=5)
             self.assertEqual((process.returncode,out.strip(),err),(0,'canary',''))
 
 
-@unittest.skipUnless(os.name=='nt','Requires authorized native Windows host; Mac mocks do not qualify Job Objects')
+@unittest.skipUnless(os.name=='nt','Needs Windows; mocks cannot test Job Objects')
 class NativeWindowsOwnership(unittest.TestCase):
     def test_real_windows_success(self):
         with ManagedCompiler([sys.executable,'-c','print("native Windows")'],Path('.')) as p:

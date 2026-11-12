@@ -2,7 +2,7 @@
 
 The 8x16 pair record is two recipe bytes plus 96 plane bytes: 32 BG,
 32 OBJ layer 0, 32 OBJ layer 1. No palette merging or approximate fallback.
-Corpus enumeration, scene keys and retail mappings remain separate work.
+Corpus enumeration, scene keys and game mappings live elsewhere.
 """
 from itertools import combinations
 from .archive import InputError
@@ -66,7 +66,7 @@ def compile_pair(pixels, bg, obj):
 
 
 def decode_pair(record, bg, obj):
-    """Independent ABI decoder for qualification of produced records."""
+    """Independent ABI decoder used to check generated records."""
     palettes(bg, obj)
     if not isinstance(record, bytes) or len(record) != 98:
         raise InputError("Native pair record must be 98 bytes")

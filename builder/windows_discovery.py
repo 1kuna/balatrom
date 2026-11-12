@@ -44,8 +44,8 @@ def discover_windows(
 ) -> dict:
     """Return a UI-ready classification, selecting only one exact known fingerprint.
 
-    roots_provider/archive_factory exist for declared portable fake fixtures; their
-    tests do not establish Windows registry/filesystem/runtime qualification.
+    roots_provider/archive_factory let tests use fake roots on any OS; those
+    tests don't exercise the real Windows registry or filesystem.
     """
     if roots_provider is None and sys.platform != "win32":
         raise InputError("Windows discovery requires Windows or explicit fake roots for a portable test")

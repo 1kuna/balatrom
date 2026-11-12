@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Independent native 3x5 and 5x7 glyph masters and ABI-stable mask tables.
+"""Hand-drawn 3x5 and 5x7 glyphs and the mask tables built from them.
 
-All masters are explicit authored cell data. No font or prior glyph file is
-read. Tiny standard letter skeletons may necessarily resemble other fonts;
-this records how this particular deliverable was made, not legal clearance.
+Every glyph is defined cell by cell below; no font file is read. Letters this
+small inevitably look like other pixel fonts.
 """
 from __future__ import annotations
 import argparse

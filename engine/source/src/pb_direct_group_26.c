@@ -119,7 +119,7 @@ void coop_publish_metadata(void) NONBANKED;
 uint8_t coop_resident;
 static uint8_t coop_old_owner,coop_old_resident,coop_journal_valid,coop_oam_touched;
 static uint8_t coop_last_poll;
-/* Main sets this only for a direction receipt on an already resident TABLE.
+/* Main sets this only for a direction press on an already resident TABLE.
  * Protection never suppresses capture, generation checks or action barriers. */
 uint8_t coop_navigation_protected,coop_navigation_clean,coop_navigation_burst;
 static uint8_t coop_navigation_started;
@@ -129,7 +129,7 @@ void coop_commit_end(void) BANKED {coop_committing=0;coop_navigation_protected=0
 uint8_t coop_checkpoint(void) BANKED {
  if(!coop_active||coop_committing)return 1;
  /* IRQ/audio are observers. Main input/load increments generation before
-  * every authoritative transaction; no GameState mutation occurs here. */
+  * every transaction; no GameState mutation occurs here. */
  if(coop_generation!=coop_stage_generation||game.phase!=PHASE_TABLE||game.ui_mode){coop_cancelled=1;return 0;}
  if(coop_last_poll!=(uint8_t)sys_time){coop_last_poll=(uint8_t)sys_time;raster_capture_inputs();}
  if(input_count&&(!coop_navigation_protected||!coop_live_held||
@@ -494,7 +494,7 @@ uint8_t *pg_cfield(const GameState*g,uint8_t i,uint8_t f) BANKED {if(i>=4u)retur
 /* Each nested event owns an independent81UID batch, not a162byte C local.
  * WRAM6D000..DFD1 fits25batches. IRQ never reads it. Any written batch
  * revokes the prospective tile image; stack depth beyond tested paths is
- * still unqualified. The bound is physical scratch capacity, not inventory. */
+ * unmeasured. The bound is physical scratch capacity, not inventory. */
 static uint8_t pg_destroy_depth;
 uint8_t pg_destroy_enter(void) BANKED {return pg_destroy_depth<25u?pg_destroy_depth++:255u;}
 void pg_destroy_leave(void) BANKED {if(pg_destroy_depth)pg_destroy_depth--;}
@@ -520,7 +520,7 @@ uint8_t coop_plain_carriers_hidden(void) BANKED {
 
 /* Protection belongs only to a focus-only transaction. Action/score/resource
  * redraws keep the original cooperative cancellation, avoiding elapsed-limit
- * restarts of a long preview paint after a navigation receipt. */
+ * restarts of a long preview paint after a navigation press. */
 uint8_t coop_focus_only(uint8_t unsafe) BANKED {
  if(unsafe)coop_navigation_protected=0;
  return coop_checkpoint();

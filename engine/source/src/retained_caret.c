@@ -55,10 +55,10 @@ static void accepted_busy(void){
  do{wait_vbl_done();}while(LY_REG<144u||LY_REG>149u);
  CRITICAL {busy_palette_raw();}
 }
-/* Exact normal TABLE START/B receipt, before core validation. Three small
+/* Normal TABLE START/B press feedback, before core validation. Three small
  * dots replace the independent caret triangle: the request is being checked,
  * with no prediction of success. Descriptor/focus/selection, palettes, audio,
- * core, RNG and SRAM stay untouched. Even rejected requests may show receipt;
+ * core, RNG and SRAM stay untouched. Even rejected requests may show the dots;
  * the mandatory full render reconstructs the ordinary triangle afterward.
  * Merged/unsupported carets retain the existing presentation fallback. */
 void retained_caret_receipt(const GameState *g) BANKED {
@@ -78,7 +78,7 @@ void retained_caret_receipt(const GameState *g) BANKED {
  raster_put_block(raster_active_bank,plane_at(descriptor[2]),raster_pixels,32);
  wait_vbl_done();VBK_REG=0;set_sprite_data(descriptor[2],2,raster_pixels);
 }
-/* Acknowledge only an already accepted, certified pure TABLE mutation.
+/* Acknowledge only an already accepted, pure TABLE mutation.
  * The complete old card/preview image remains visible until the normal
  * renderer publishes it. This independent gold caret is the interim signal:
  * horizontal position acknowledges focus; its eight-pixel rise/fall
@@ -92,7 +92,7 @@ void retained_caret_receipt(const GameState *g) BANKED {
 void retained_caret_acknowledge(const GameState *g) BANKED {
  uint8_t page,mask,count,pos,top,row,descriptor[2],ticket=retained_pressed;
  if(g!=&game||!valid||!retained_caret_mode||!raster_live||raster_fault||!(LCDC_REG&LCDCF_ON))return;
- /* Only the exact audited main-loop action can issue these tickets. Failed
+ /* Only the main-loop action handler can issue these tickets. Failed
   * previews/Bell/resource checks do not decrement and cannot look accepted.
   * Durable tickets always keep the original synchronous save afterward. */
  if(g->phase!=PHASE_BLOCKED&&

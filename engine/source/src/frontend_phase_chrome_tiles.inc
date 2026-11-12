@@ -1,4 +1,4 @@
-/* Generated from the unchanged native 5px font.  */
+/* Generated from the native 5px font. */
 #include "frontend_phase_chrome_tiles_chrome_shop.inc"
 
 #include "frontend_phase_chrome_tiles_chrome_buffoon.inc"

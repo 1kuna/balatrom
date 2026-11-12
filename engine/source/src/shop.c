@@ -120,7 +120,7 @@ void pack_input(uint8_t pressed) CORE_BANKED {uint8_t i,id,ok,kind;
 
 /* Private native-only speculative stock preparation. Bank7 D000..D0FF is
  * below the existing Frame lease at D100. Header64 +150 candidate bytes end
- * at D0D5; telemetry livesD0F0..D0FB. No authoritative state changes on idle.
+ * at D0D5; telemetry livesD0F0..D0FB. No game state changes while idle.
  * One draw, eight deck cards or four pool entries per slice; strict dependency equality is
  * checked immediately before stock/RNG commit. An8-bit input epoch restarts pending work; epoch wrap cannot admit stale stock because the consumer independently checks the full semantic key. */
 #include "native_run_rng.h"

@@ -8,7 +8,7 @@
  * This module never publishes, writes VRAM, or bypasses whole-frame admission. */
 static uint8_t valid,card_changes,joker_changes,palette_changes;
 static uint16_t glyph_changes;
-/* Bit1 certifies a suspended TABLE snapshot across only inventory/Joker
+/* Bit1 marks a suspended TABLE snapshot across only inventory/Joker
  * legacy presentation. Legacy owns VRAM, never these WRAM recipe shadows.
  * Fresh public keys and whole-frame admission still run on return. */
 void raster_cache_legacy(uint8_t keep) BANKED {

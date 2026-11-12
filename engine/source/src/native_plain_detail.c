@@ -19,9 +19,9 @@ typedef struct {
 typedef char plain_cache_contract[(sizeof(PlainCache)==139u&&offsetof(PlainCache,detail_plain)==135u)?1:-1];
 #define pcache ((const PlainCache *)raster_loads)
 #include "R74_plain_templates.inc"
-/* Zero-selection admission is intentionally narrower than the host superset.
+/* Zero-selection handling is deliberately narrower than the host version.
  * Both original public preview paths explicitly return valid/nonhidden when
- * selection is empty; cached preview_type254 certifies that source result.
+ * selection is empty; cached preview_type254 records that result.
  * Existing formatting produced these fields before this exact call boundary. */
 static uint8_t eligible(const A1Text *f,uint8_t n,uint8_t plain,uint8_t *chosen){
  const GameState *g=&game;const uint8_t *k;uint8_t rank,caption,len,i;

@@ -1,4 +1,4 @@
-"""Reviewed compatibility profiles; no user-supplied profile unlock path."""
+"""Built-in compatibility profiles; users cannot add their own."""
 from pathlib import Path
 import json
 import re
@@ -272,9 +272,9 @@ def validate(profile):
     scenes = [r for r in recipes if r["kind"] == "native-scenes"]
     if len(scenes) > 1 or scenes and any(r["kind"] == "native-pairs" for r in recipes):
         raise InputError("Only one scene atlas owns direct-cache group namespace")
-    # A profile can enable conversion before a separately reviewed engine exists.
+    # A profile can enable conversion before an engine exists for it.
     if profile["engine"] is not None:
-        raise InputError("Engine integration is not admitted in this implementation")
+        raise InputError("Engine integration is not supported here")
     return profile
 
 
@@ -311,7 +311,7 @@ def match(fingerprint, profiles=None):
     matches = [p for p in (registry() if profiles is None else profiles)
                if validate(p)["manifest_sha256"] == fingerprint["manifest_sha256"]]
     if len(matches) != 1:
-        raise InputError("No unique verified retail compatibility profile matches; conversion is blocked")
+        raise InputError("No single supported game version matches; conversion stopped")
     profile = matches[0]
     actual = {m["name"]: {"bytes": m["bytes"], "sha256": m["sha256"]} for m in rows}
     if any(actual.get(name) != metadata for name, metadata in profile["members"].items()):

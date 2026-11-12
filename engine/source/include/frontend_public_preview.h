@@ -3,7 +3,7 @@
 #include <gb/gb.h>
 #include "game.h"
 #include "hand_preview.h"
-/* Stable authoritative input; display-only consensus over public faces/roles.
+/* Display-only consensus over visible faces/roles.
  * A hidden identity, effect, UID or actual core result never selects profiles. */
 uint8_t frontend_public_preview_hidden(const GameState *g) BANKED;
 /* Acquire renderer fields from public consensus before private recognition.

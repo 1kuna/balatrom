@@ -1,7 +1,7 @@
-"""PRIVATE QA packaging entry; not selected for a public consumer artifact.
+"""Scripted end-to-end test of the legacy Qt GUI; not part of the released app.
 
-The real Window/controller/worker are used. File chooser responses and consent
-are scripted against a pinned owner-approved plan, not claimed personal QC.
+Uses the real window, controller and worker. File dialogs and confirmations are
+answered from a pinned plan file.
 """
 import json,os,sys,time,hashlib
 from pathlib import Path
@@ -46,7 +46,7 @@ with patch.object(QMessageBox,'question',return_value=QMessageBox.StandardButton
     receipt={'status':'PASS_PACKAGED_GUI_OWNED_BUILD_EXPORT_SAVE_COPY','wall_seconds':time.monotonic()-started,
         'ROM_sha256':hashlib.sha256(target.read_bytes()).hexdigest(),'save_sha256':plan['save_sha256'],
         'owned_receipt':str(next((root/'library').rglob('OWNED_INSTALL_RECEIPT.json'))),
-        'real_GUI_clicks':True,'dialog_inputs_and_consent':'scripted authorized QA; not personal QC',
+        'real_GUI_clicks':True,'dialog_inputs_and_consent':'scripted',
         'originals_unchanged':True,'emulator_continue_verified_in_this_stage':False,'user_saves_accessed':False}
     (root/'GUI-FLOW-RESULT.json').write_text(json.dumps(receipt,indent=2)+'\n')
 window.close();app.processEvents()

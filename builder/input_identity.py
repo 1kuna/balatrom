@@ -1,9 +1,8 @@
-"""Exact owned-content identity; allow only the Windows executable wrapper to vary.
+"""Identify a supported install; only the Windows executable wrapper may differ.
 
-The entire sorted archive-member manifest (every name, size and SHA256) must
-remain identical to the registered cohort. No game content or version is relaxed.
-The real raw archive fingerprint is always recorded; never substitute the Mac hash.
-Windows runtime/input compatibility remains untested until used on Windows.
+The sorted archive-member manifest (every name, size and SHA-256) must match
+the registered one exactly. The raw archive fingerprint is always recorded;
+never substitute the Mac hash. Not yet tested on a real Windows install.
 """
 import re
 import sys

@@ -18,9 +18,9 @@ test('both targets install exactly the same UI and protocol files',()=>{
 test('foreign-platform plan is allowed, native assembly refuses before writing',()=>{
  const foreign=process.platform==='darwin'?'win32':'darwin';const output=path.join(os.tmpdir(),'not-created-balatrom-'+process.pid);
  const p=plan(foreign,{runtime:path.resolve('runtime'),workerDir:path.resolve('worker'),output});
- assert.equal(p.runtimeAcceptance,false);assert.throws(()=>assemble(p),/matching authorized OS/);assert.equal(fs.existsSync(output),false);
+ assert.equal(p.runtimeAcceptance,false);assert.throws(()=>assemble(p),/must run on the matching OS/);assert.equal(fs.existsSync(output),false);
 });
-test('Windows plan accepts native drive paths without claiming native execution',()=>{
+test('Windows plan accepts drive-letter paths without running anything',()=>{
  const p=plan('win32',{runtime:'C:\\Electron Runtime',workerDir:'C:\\Worker With Spaces',output:'C:\\New Builder'});
  assert.equal(p.layout.entry,'BalatROM.exe');assert.equal(p.nativeQualificationRequired,true);assert.equal(p.runtimeAcceptance,false);
 });

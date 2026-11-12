@@ -1,4 +1,4 @@
-"""Offline private engine integration. No retail execution, network or flashing."""
+"""Build the ROM offline from a supported install. Never runs the game, uses the network or flashes a cartridge."""
 from pathlib import Path
 import hashlib
 import json
@@ -92,7 +92,7 @@ def _build_owned_impl(game_path, engine_packet, output, lcc, assemble_only=False
     profiles = json.loads(REGISTRY.read_text())["profiles"]
     profile = next((p for p in profiles if p["engine_manifest_sha256"] == sha(packet / "manifest.json")), None)
     if profile is None:
-        raise InputError("Engine packet is not registered for the reviewed private partial profile")
+        raise InputError("Engine directory does not match a registered build profile")
     manifest = load(packet)
     omit_hybrid = manifest.get("unused_hybrid_omitted") == 1
     source_count = manifest["descriptor"]["source_inputs"]
@@ -126,11 +126,11 @@ def _build_owned_impl(game_path, engine_packet, output, lcc, assemble_only=False
     with Archive(game_path) as archive:
         fingerprint = archive.fingerprint()
         if not matches({k:fingerprint[k] for k in ("archive_sha256","manifest_sha256")}, {"archive_sha256":ARCHIVE_SHA,"manifest_sha256":MANIFEST_SHA}):
-            raise InputError("Unsupported installation: requires the exact registered Balatro content cohort")
+            raise InputError("Unsupported installation: the game files must match the supported Balatro version exactly")
         if preflight:
             archive.assert_unchanged()
             return {"profile_id": profile["id"], "preflight_passed": True,
-                    "scope": "prerequisites verified; no reconstruction, compiler execution or runtime qualification",
+                    "scope": "prerequisites checked; nothing reconstructed or compiled",
                     "source_inputs": source_count, "compiler_units": 198,
                     "expected_ROM_sha256": expected_rom, "free_bytes": free_bytes,
                     "output_created": False, "ROM_built": False,
@@ -179,7 +179,7 @@ def _build_owned_impl(game_path, engine_packet, output, lcc, assemble_only=False
             path = view / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(data)
-        receipt = {"profile_id": profile["id"], "scope": "private partial owned-install build; not full retail fidelity or public release",
+        receipt = {"profile_id": profile["id"], "scope": "local build from your own install; not the full game",
                    "archive_sha256": ARCHIVE_SHA, "archive_manifest_sha256": MANIFEST_SHA,
                    "input_member_sha256": members, "engine_packet_manifest_sha256": sha(packet / "manifest.json"),
                    "source_sha256": {name: hashlib.sha256(data).hexdigest() for name, data in source.items()},
@@ -193,7 +193,7 @@ def _build_owned_impl(game_path, engine_packet, output, lcc, assemble_only=False
         cancel_check()
         result = compile_fresh(destination, manifest["descriptor"], compiler, cancel_check=cancel_check, workers=compile_workers, cache_dir=object_cache)
         if result["rom"]["sha256"] != expected_rom:
-            raise InputError("Fresh ROM differs from the registered build; output remains unadmitted")
+            raise InputError("Fresh ROM differs from the registered build; output rejected")
         archive.assert_unchanged()
         receipt.update(ROM_built=True, ROM_sha256=expected_rom, fresh_compiler_units=result["fresh_compiler_units"], cached_game_objects=result["cached_game_objects"],
                        wall_seconds=time.monotonic() - started)

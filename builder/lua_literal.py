@@ -43,7 +43,7 @@ def parse(data):
         raise InputError("Literal table must be UTF-8") from exc
     # Long strings/comments are deliberately not silently consumed.
     if re.search(r"\[(?:=*)\[", source):
-        raise InputError("Lua long strings/comments need a reviewed adapter")
+        raise InputError("Lua long strings/comments are not supported")
     tokens = []
     pos = 0
     while pos < len(source):

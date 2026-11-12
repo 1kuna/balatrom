@@ -27,7 +27,7 @@ static uint8_t increment(GbNum *state,int16_t delta,JokerNumCounterEffect *o){
 static uint8_t valid(const GbNum *state){GbNum zero;gb_num_from_u32(&zero,0);return gb_num_cmp(state,&zero)!=GBN_UNORDERED;}
 void joker_num_counter_event(uint8_t id,GbNum *state,const JokerCounterContext *c,JokerNumCounterEffect *o) CORE_BANKED {
  uint8_t handled=0,status;int16_t delta=0;GbNum amount,next,threshold,count,one;
- /* Exact native round64(1/100), verified at both Ramen subtractions in r42.
+ /* Exact native round64(1/100), the value both Ramen subtractions use.
   * Keep subtraction and <=1 destruction unchanged; no extra mutable state. */
  static const GbNum ramen_step={{0x7b,0x14,0xae,0x47,0xe1,0x7a,0x84,0x3f}};
  memset(o,0,sizeof(*o));gb_num_from_u32(&o->xmult,1);
@@ -126,7 +126,7 @@ static uint8_t active_face(const GameState *g,const Card *card){
  for(i=0;i<g->joker_count;i++)if(PG_JBYTE(g,i,jokers,0u)==J_PAREIDOLIA && !(PG_DEBUFF(g,i)))return 1;
  return 0;
 }
-/* Private118: per-owned binary64 growth, with no additional saved fields.
+/* Per-instance binary64 growth, with no additional saved fields.
  * Loyalty stores its acquisition-time global played-hand count; the global
  * history clock continues during debuff, matching source rather than a local
  * counter that pauses when the actor is inactive. MAIN sees current hand +1. */
@@ -173,7 +173,7 @@ void joker_num_counter_game_event(GameState *g,uint8_t id,const JokerContext *c,
    x.event=JCE_BEFORE_HAND;x.hand_predicates_available=x.played_count_available=x.scoring_faces_available=1;
    x.straight=c->straight;x.two_pair=c->pairs>=2 || (c->pairs && c->trips);
    x.full_house=c->pairs && c->trips;x.played_count=c->played_count;
-   /* Private119: source evaluates after incrementing current-hand history.
+   /* The game evaluates after incrementing current-hand history.
     * Standard nine hands are visible initially; the three secret hands become
     * visible on first play. Their native played counters persist this fact.
     * Source compares any other visible hand >= current, including ties. */

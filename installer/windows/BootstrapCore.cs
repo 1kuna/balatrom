@@ -171,7 +171,7 @@ namespace BalatROM.Setup {
     }
     progress(new ProgressInfo("Preparing the BalatROM builder"));using(var embedded=new MemoryStream(payload))Extract(embedded,stage,cancel);
     cancel.ThrowIfCancellationRequested();progress(new ProgressInfo("Verifying every application file"));
-    if(!Verify(stage,manifest,config.PackageManifestSha256,cancel))throw new IOException("Setup contents differ from the reviewed app. Existing files were preserved.");
+    if(!Verify(stage,manifest,config.PackageManifestSha256,cancel))throw new IOException("Setup contents differ from the expected app. Existing files were preserved.");
     cancel.ThrowIfCancellationRequested();Directory.CreateDirectory(Path.GetDirectoryName(final));NoLinks(Path.GetDirectoryName(final));
     if(Directory.Exists(final))Directory.Move(final,final+".preserved-"+Guid.NewGuid().ToString("N"));
     Directory.Move(stage,final);return Path.Combine(final,"BalatROM.exe");

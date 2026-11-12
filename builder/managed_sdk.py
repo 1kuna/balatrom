@@ -1,4 +1,4 @@
-"""User-approved official GBDK acquisition and pinned temporary compiler overlays.
+"""Download the official GBDK once the user approves, and set up pinned compiler copies.
 
 No game download, global install, PATH edits, installer scripts or security overrides.
 """
@@ -31,7 +31,7 @@ def profile():
     elif sys.platform == "win32" and machine in ("amd64", "x86_64"):
         name = "GBDK-windows-amd64.json"
     else:
-        raise UpdateError("This computer does not have a qualified build-tools package yet.")
+        raise UpdateError("There is no supported build-tools package for this computer yet.")
     root = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[1]))
     return json.loads((root / "notices" / name).read_text())
 
@@ -93,7 +93,7 @@ def _unpack(archive, destination, record, cancel):
         check_cancel(cancel)
         _relative(name)
         if name not in expected or name in seen or size != expected[name]["bytes"]:
-            raise UpdateError("Build-tools archive contents differ from the reviewed release.")
+            raise UpdateError("Build-tools archive contents differ from the pinned release.")
         total += size
         if total > MAX_EXPANDED:
             raise UpdateError("Build-tools archive exceeds the extraction limit.")
@@ -216,7 +216,7 @@ def _apply_working_copy_overlay(work, record):
     rows = [dict(row) for row in record['files']]
     matches = [row for row in rows if row['path'] == overlay['destination']]
     if len(matches) != 1:
-        raise UpdateError('Reproducible compiler target is absent from the reviewed SDK.')
+        raise UpdateError('Reproducible compiler target is absent from the pinned SDK.')
     matches[0].update(bytes=overlay['bytes'], sha256=overlay['sha256'])
     target = Path(work).joinpath(*_relative(overlay['destination']).parts)
     target.write_bytes(data)
@@ -228,8 +228,8 @@ def _apply_working_copy_overlay(work, record):
 def compiler_session(cache, *, approved, cancel, progress, record=None, reader=download):
     """Keep upstream lcc's 128-byte expansion buffer away from long user paths.
 
-    Verified upstream tools; optional separately pinned compiler in the disposable copy.
-    The private cache remains the retained authority; the working copy is disposable.
+    Uses the verified upstream tools, plus the separately pinned compiler if there is one.
+    The private cache stays the reference copy; the working copy is disposable.
     """
     record = record or profile()
     bundle = Path(__file__).resolve().parents[1] / 'bundled-tools' / 'gbdk'
@@ -242,7 +242,7 @@ def compiler_session(cache, *, approved, cancel, progress, record=None, reader=d
         compiler = ensure(cache, approved=approved, cancel=cancel, progress=progress, record=record, reader=reader)
     if sum(row['bytes'] for row in record['files']) > MAX_EXPANDED:
         raise UpdateError('Build-tools working copy exceeds its size limit.')
-    # macOS /tmp is an OS-provided temporary location, not a legacy dependency.
+    # macOS /tmp is a short, OS-provided temporary location.
     # mkdtemp creates a unique mode0700 directory; no pre-existing path is reused.
     parent = '/tmp' if sys.platform == 'darwin' else tempfile.gettempdir()
     with tempfile.TemporaryDirectory(prefix='brt-', dir=parent) as name:

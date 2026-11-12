@@ -17,7 +17,7 @@ def main() -> int:
     p.add_argument('--output',type=Path,required=True)
     args=p.parse_args()
     if os.name!='nt' or struct.calcsize('P')!=8 or platform.machine().lower() not in ('amd64','x86_64'):
-        p.error('Run on an authorized native Windows AMD64 host with 64-bit CPython3.13; no Mac cross-build claim')
+        p.error('Run on 64-bit Windows (AMD64) with 64-bit CPython 3.13')
     if sys.version_info[:2]!=(3,13):p.error('This preparation lock targets CPython3.13 only')
     root=Path(__file__).resolve().parents[1];sys.path.insert(0,str(root))
     from builder.archive import Archive,InputError
@@ -27,7 +27,7 @@ def main() -> int:
     result={'scope':'Read-only native Windows interpreter/dependency/SDK/input probe; no compiler/game execution',
             'platform':platform.platform(),'python':sys.version,'architecture':platform.machine(),
             'profiles_or_saves_accessed':False,'game_executed':False,'compiler_executed':False,
-            'Windows_consumer_GUI_guard':'still disabled pending owner-reviewed native qualification',
+            'Windows_consumer_GUI_guard':'disabled until tested on Windows',
             'runtime_qualified':False,'errors':[]}
     versions={'PySide6-Essentials':'6.11.2','shiboken6':'6.11.2','PyInstaller':'6.22.3','Pillow':'12.3.0'}
     result['dependencies']={}
@@ -52,7 +52,7 @@ def main() -> int:
     except (InputError,OSError) as exc:result['errors'].append('Cannot inspect game: '+str(exc))
     if not result['errors']:
         try:result['registered_preflight']=build_owned(args.game,root/'engine',output/'unused-build-output',args.lcc,preflight=True)
-        except (InputError,OSError) as exc:result['errors'].append('Not admitted input/build prerequisites: '+str(exc))
+        except (InputError,OSError) as exc:result['errors'].append('Missing or unsupported build prerequisites: '+str(exc))
     result['status']='FAIL_UNQUALIFIED' if result['errors'] else 'PASS_PREREQUISITES_ONLY'
     (output/'WINDOWS-PREFLIGHT.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k!='input_fingerprint'},indent=2))

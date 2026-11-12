@@ -67,7 +67,7 @@ static uint8_t safe_title(void){
 }
 void native_busy_title_resume(void) BANKED {
  /* Preserve genuine TITLE origin even before its WAIT lease is complete.
-  * State199 certifies origin only; no card or WAIT readiness is implied. */
+  * State199 marks origin only; it says nothing about card or WAIT readiness. */
  if(safe_title()){
   if(native_table_bank1_owner!=TITLE_WAIT_OWNER||progress>19u)progress=0;
   native_table_bank1_owner=TITLE_WAIT_OWNER;

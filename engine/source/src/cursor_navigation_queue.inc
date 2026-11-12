@@ -1,7 +1,7 @@
 /* Main is the only consumer; IRQ may append but cannot move head here.
  * Reject combined-direction masks and all action barriers. Twelve entries
- * leave four FIFO slots for capture during abort/restore; the native proof
- * must bound that tail before admission. Do not infer a timing proof here. */
+ * leave four FIFO slots for input captured during abort/restore. Nothing
+ * here bounds how long that tail takes. */
 static uint8_t cursor_navigation_queue(const volatile uint8_t *queue,uint8_t head,uint8_t count){
  uint8_t i,key;
  if(count>12u)return 0;

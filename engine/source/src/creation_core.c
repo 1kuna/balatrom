@@ -27,7 +27,7 @@ uint8_t creation_core_use(uint8_t mode,uint8_t slot,uint8_t kind,uint8_t id) COR
  if(creation_commit_active){creation_core_error=30;return 0;}
  if(!creation_effect_supported(kind,id)||!creation_policy_defaults(&game,&policy))return 0;
  creation_policy_all_unlocked(&policy);
- /* Current admitted constructors initialize only instance state. Current use
+ /* Current constructors initialize only instance state. Current use
  callbacks write only instance state, usedPlanets and lastConsumable metadata.
  Chicot boss mutation is deferred until all rollback checks pass in creation_commit. */
  for(i=0;i<joker_pool_count;i++)creation_policy_key(policy.acquire_safe,ITEM_JOKER,joker_pool[i],1);for(i=J_CAINO;i<=J_PERKEO;i++)creation_policy_key(policy.acquire_safe,ITEM_JOKER,i,1);

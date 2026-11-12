@@ -14,25 +14,25 @@ def main(argv=None):
     if argv == ["app"]:
         print("Use the Electron desktop builder. The legacy Qt GUI entry is retired.", file=sys.stderr)
         return 2
-    parser = argparse.ArgumentParser(description="Offline native content conversion from your own desktop files")
+    parser = argparse.ArgumentParser(description="Build BalatROM from your own copy of Balatro")
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("compatibility", help="List verified retail profiles")
-    discovery = commands.add_parser("discover", help="Find Balatro through conventional Steam/library manifests; never launch it")
+    commands.add_parser("compatibility", help="List supported game versions")
+    discovery = commands.add_parser("discover", help="Find Balatro through Steam library manifests (never launches it)")
     discovery.add_argument("--steam-root", action="append", help="Explicit Steam root; repeat for custom library discovery")
     probe = commands.add_parser("probe", help="Read and fingerprint an ordinary game archive")
     probe.add_argument("--game-path", required=True)
     probe.add_argument("--include-members", action="store_true", help="Include private member metadata in stdout")
-    importer = commands.add_parser("import-local", help="Convert a matched retail profile into a new private workspace")
+    importer = commands.add_parser("import-local", help="Convert a supported install into a new workspace")
     importer.add_argument("--game-path", required=True)
     importer.add_argument("--output", required=True)
-    build = commands.add_parser("build", help="Check admission; ROM integration is not available yet")
+    build = commands.add_parser("build", help="Check a workspace; does not build a ROM")
     build.add_argument("--workspace", required=True)
-    native = commands.add_parser("check-native", help="Compile verified generated ABI units only; not a ROM")
+    native = commands.add_parser("check-native", help="Compile the generated units only; does not build a ROM")
     native.add_argument("--game-path", required=True)
     native.add_argument("--workspace", required=True)
     native.add_argument("--output", required=True)
     native.add_argument("--lcc", required=True)
-    owned = commands.add_parser("owned-build", help="Build the private partial profile from owned files and an explicit reviewed engine packet")
+    owned = commands.add_parser("owned-build", help="Build the ROM from your game install and the engine directory")
     owned.add_argument("--game-path", help="Explicit app/archive; otherwise discover through Steam manifests")
     owned.add_argument("--steam-root", action="append", help="Explicit Steam root for automatic discovery")
     owned.add_argument("--engine-packet", required=True)
@@ -67,7 +67,7 @@ def main(argv=None):
                 profile = match(result)
                 result.update(supported=True, profile_id=profile["id"])
             except InputError:
-                result.update(supported=False, reason="No verified retail profile matches")
+                result.update(supported=False, reason="No supported game version matches")
             result["member_count"] = len(result["members"])
             if not args.include_members:
                 result.pop("members")
@@ -83,7 +83,7 @@ def main(argv=None):
             print(json.dumps({"units_compiled": len(report["units"]), "rom_built": False}, indent=2))
         else:
             verify_workspace(args.workspace)
-            raise InputError("Native engine/content ABI integration is not admitted; no ROM was built")
+            raise InputError("This command does not build a ROM; use owned-build")
     except (InputError, OSError, ValueError) as exc:
         print("error: " + str(exc), file=sys.stderr)
         return 2

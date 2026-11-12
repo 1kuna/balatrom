@@ -16,8 +16,8 @@ for name in sorted(n for n in names if n):
         raise ValueError('Unsafe tracked source path')
     path=root/relative
     if any(p.is_symlink() for p in (path,*[root/Path(*relative.parts[:i]) for i in range(1,len(relative.parts))])):
-        raise ValueError('Source symlink is not admitted')
-    if path.is_symlink():raise ValueError('Source symlink is not admitted')
+        raise ValueError('Symlinks are not allowed in the source')
+    if path.is_symlink():raise ValueError('Symlinks are not allowed in the source')
     if not path.is_file():raise ValueError('Tracked source file is missing: '+name)
     if '__pycache__' in path.parts or path.suffix=='.pyc':raise ValueError('Remove generated Python cache before packaging')
     files.append({'path':name,'bytes':path.stat().st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()})

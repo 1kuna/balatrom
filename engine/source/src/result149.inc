@@ -32,7 +32,7 @@ static char rchiptext[16],rmulttext[16],rtotaltext[16],rtargettext[16];
 static const char *const rnames[]={"HIGH CARD","PAIR","TWO PAIR","THREE OF A KIND","STRAIGHT","FLUSH","FULL HOUSE","FOUR OF A KIND","STRAIGHT FLUSH","FIVE OF A KIND","FLUSH HOUSE","FLUSH FIVE"};
 /* the TABLE's slate sidebar, felt, chip blue and mult red.
  * Palette0 must match render.c ui_palettes palette0 (shop157 borrows sidebar
- * glyphs: colours0/2/3 only). Cohesion: palette1 colour3 is the TABLE dark felt
+ * glyphs: colours0/2/3 only). Palette1 colour3 is the TABLE dark felt
  * (a1 palette0 colour1, 3,10,6) for the felt texture; its only other user, the
  * RUN LOST plate border, deliberately becomes a muted felt edge. */
 static const palette_color_t rpal[12]={RGB(3,3,4),RGB(4,13,9),RGB(30,29,27),RGB(30,23,7),RGB(4,13,9),RGB(29,8,7),RGB(30,29,27),RGB(3,10,6),RGB(4,13,9),RGB(4,17,29),RGB(30,29,27),RGB(30,23,7)};
@@ -121,7 +121,7 @@ static uint8_t rglyphs(uint8_t tile,uint8_t count){return rappend(5,0xd000+(uint
 #define RD_CENTER 4u
 #define RD_RIGHT 8u
 #define RD_GOLD 16u
-#define RD_TEX 32u /* Cohesion: clear unused field cells to the TABLE felt texture (palette1) */
+#define RD_TEX 32u /* Clear unused field cells to the TABLE felt texture (palette1) */
 /* Ledger: text is placed at a centred/right offset inside its fixed field; every
  * other field cell is cleared to paper tile1 in the same publication. */
 static uint8_t rdraw(uint8_t tile,uint8_t x,uint8_t y,const char*s,uint8_t cells,uint8_t pal,uint8_t style){uint8_t i,drawn,off,len=strlen(s),map[15],attrs[15];char t[17];
@@ -134,7 +134,7 @@ static uint8_t rdraw(uint8_t tile,uint8_t x,uint8_t y,const char*s,uint8_t cells
   if(!in&&(style&RD_TEX)){map[i]=RL_TEXAT(x+i,y);attrs[i]=1u;continue;}
   map[i]=in?(uint8_t)((tile+i-off)&127u):1u;attrs[i]=pal|((in&&tile+i-off>=128u)?8u:0u);}
  rfast_put(7u,0xd200u+(uint16_t)y*32u+x,map,cells);rfast_put(7u,0xd600u+(uint16_t)y*32u+x,attrs,cells);rappend(7u,0xd200u+(uint16_t)y*32u,0x9c00u+(uint16_t)y*32u,0u,2u);rappend(7u,0xd600u+(uint16_t)y*32u,0x9c00u+(uint16_t)y*32u,1u,2u);if(drawn)rglyphs(tile,drawn);return 1;}
-/* ---- Cash-Out Ledger helpers . Staging-only writes plus bounded jobs. */
+/* ---- Cash-Out Ledger helpers: staging-only writes plus bounded jobs. */
 #define RBEATS rcontinue /* rcontinue is never read after begin: beat flags, 0 new RAM */
 #define RB_CHIPS 1u
 #define RB_MULT 2u
@@ -189,9 +189,9 @@ uint8_t result149_begin(const GameState*g) BANKED {uint16_t i;uint8_t tile[16],a
  for(a=0;a<RL_TILE_COUNT;a++)rput(5u+a,rledger_tiles+(uint16_t)a*16u);
  /* Static ledger map: row1 gold rule, row10 empty progress track (caps at5/19). */
  for(i=0;i<18;i++){uint8_t x;uint8_t maprow[32],attrrow[32];memset(maprow,0,32);memset(attrrow,0,32);for(x=5;x<20;x++){maprow[x]=i>=16?0:i==1?4:i==10?((x==5||x==19)?RL_BAR_CAP:RL_BAR_EMPTY):i==2?1:RL_TEXAT(x,i);
-  /* Cohesion: open felt carries the TABLE texture (palette1); row2 stays flat for the hand band. */
+  /* Open felt carries the TABLE texture (palette1); row2 stays flat for the hand band. */
   if(i<16&&i!=1&&i!=2&&i!=10)attrrow[x]=1u;}if(i==10)attrrow[19]=0x20u;maprow[4]=2;if(i==4||i==8)for(x=0;x<4;x++)maprow[x]=3;memcpy(shop157_maps+i*5u,maprow,5u);memcpy(shop157_attrs+i*5u,attrrow,5u);rfast_put(7,0xd200+i*32,maprow,32);rfast_put(7,0xd600+i*32,attrrow,32);if(!rvalid()){result149_cancel();return 1;}}
- /* Cohesion: money/ante/round values in TABLE gold (pal bit6), same in shop157's borrowed copy. */
+ /* Money/ante/round values in TABLE gold (pal bit6), same in shop157's borrowed copy. */
  rtext(0,1,"TARGET",5,0,1,0);rnumber(0,3,&g->target,8,4,1,0);rtext(0,6,"SCORE",4,0,1,0);rnumber(0,7,&g->score,8,4,1,0);
  rtext(0,10,"HANDS",3,0,0,0);rnumber(3,10,&g->hands,1,1,0,0);rtext(0,11,"DISC",3,0,0,0);rnumber(3,11,&g->discards,1,1,0,0);rtext(0,12,"MONEY",4,0,0,0);rtext(0,13,"$",1,0x40u,0,0);money=g->money<0?0u-(uint32_t)g->money:(uint32_t)g->money;if(g->money<0){label[0]='-';frontend_format_number(&money,4,label+1);}else frontend_format_number(&money,4,label);rtext(1,13,label,3,0x40u,0,0);rtext(0,15,"ANTE",3,0,0,0);rnumber(3,15,&g->ante,1,1,0,0x40u);rtext(0,16,"RND",3,0,0,0);a=g->blind+1;rnumber(3,16,&a,1,1,0,0x40u);
  /* Row0 blind plate: existing blind/boss name, gold heading, centred. */
@@ -223,7 +223,7 @@ void result149_idle(void) BANKED {uint16_t elapsed;uint8_t blocks,a;char s[16];
  /* No callback/timer survives exit. Each sample paints final-field copies;
   * the 31-block budget includes simultaneous chips/mult and total/target. */
  rjobcount=rblocks=0;
- /* Cash-Out Ledger beats (see the result animation schedule). Every beat is
+ /* Cash-Out Ledger beats, each starting at a fixed tick (0..54). Every beat is
   * idempotent and retries next tick if the 14-job/31-block budget is full. */
  if(rtick>=8&&!remphasis&&rjobcount<14u&&rblocks+2u<=31u){a=rhandcells();rband(2,rcentre(a),a,rhand,0);rappend(7u,0xd600u+2u*32u,0x9c00u+2u*32u,1u,2u);remphasis=1;}
  if(rtick>=6&&!(RBEATS&RB_CHIPS)&&rlips(5,2u))RBEATS|=RB_CHIPS;

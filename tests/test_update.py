@@ -246,7 +246,7 @@ class UpdateContracts(unittest.TestCase):
 
     def test_repository_identity_must_be_pinned_and_match(self):
         _, _, reader, _ = fixture()
-        with self.assertRaisesRegex(u.UpdateError, "qualified"):
+        with self.assertRaisesRegex(u.UpdateError, "not pinned"):
             u.discover("0.0.0", reader=reader)
         with self.assertRaisesRegex(u.UpdateError, "identity changed"):
             u.discover("0.0.0", reader=reader, repository_id=999)

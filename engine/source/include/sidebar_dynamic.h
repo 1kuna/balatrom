@@ -9,7 +9,7 @@ extern const unsigned char sidebar_card_maps[416];
 /* 15 bits: row-major3x5, bit14 top-left;4px advance. */
 extern const unsigned short sidebar_glyph3[128];
 extern const unsigned short sidebar_card_palette[4];
-/* Native checkpoint IDs0..11, each6tiles /96bytes, fourRGB555 colors. */
+/* Prototype jokers 0..11, each 6 tiles / 96 bytes, four RGB555 colors. */
 extern const unsigned char sidebar_proto_joker_tiles[1152];
 extern const unsigned short sidebar_proto_joker_palettes[48];
 #endif

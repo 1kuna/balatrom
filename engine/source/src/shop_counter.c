@@ -1,6 +1,6 @@
 #pragma bank 255
-/* Shop Counter . Banked extraction of the legacy shop body from
- * render.c. Paint-only: reads GameState, calls the same name/effect/price/icon
+/* Shop Counter: the legacy shop body, moved out of render.c into its own
+ * bank. Paint-only: reads GameState, calls the same name/effect/price/icon
  * APIs and the same shop154 hidden-staging writers. No GameState, RNG, input or
  * save writes; no static RAM. HUD tile ids are lent by render.c and returned. */
 #include "game.h"
@@ -54,8 +54,8 @@ static void sc_paint(uint8_t *t,uint8_t row,uint8_t m,uint8_t c){
  t[row*2]=(uint8_t)((t[row*2]&~m)|((c&1u)?m:0u));t[row*2+1]=(uint8_t)((t[row*2+1]&~m)|((c&2u)?m:0u));
 }
 static void sc_fill(uint8_t *t,uint8_t bg){uint8_t r;for(r=0;r<8u;r++){t[r*2]=(bg&1u)?255u:0u;t[r*2+1]=(bg&2u)?255u:0u;}}
-/* Shop-local 3x5 punctuation . The shared font draws its "?" fallback
- * [7,1,2,0,2] for + , ( ) < > = % & # ; * "; combined3 effects showed "16?",
+/* Shop-local 3x5 punctuation. The shared font draws its "?" fallback
+ * [7,1,2,0,2] for + , ( ) < > = % & # ; * ", so effect text showed "16?",
  * "?12 MULT", "2?3?4?5". Only when the shared glyph IS that fallback is the
  * local glyph used, so every real shared glyph and every other screen is
  * unchanged. Rows are 3-bit masks, bit2 = left column. */
@@ -86,7 +86,7 @@ static const char *sc_centre(const char *s,uint8_t cells,char *out){uint8_t len=
  if(len>=cells*2u)return s;pad=(uint8_t)((cells*2u-len)/2u);memset(out,' ',pad);strcpy(out+pad,s);return out;}
 /* Heading font (6px advance) recoloured: glyph fg on bg. Falls back to 3x5.
  * The heading font covers ASCII 32..95 only: names are normalised to upper case
- * (combined1 frames showed "D??????? L???????" for mixed-case names). fg bit7
+ * (mixed-case names used to show as "D??????? L???????"). fg bit7
  * adds a colour-0 drop shadow one pixel down-right. */
 static void sc_head(uint8_t *hud,uint8_t x,uint8_t y,const char *src,uint8_t cells,uint8_t pal,uint8_t bg,uint8_t fg){
  uint8_t tile[16],map[15],attr[15],n,r,g,pv,sh,ch=0,off=0,len=0,a,b,k,px,apostrophe,lo,hi,fliplo,fliphi,drawn,plain=1;uint32_t tick=0;char s[33];const char *orig=src;const uint8_t *left,*right;
@@ -149,7 +149,7 @@ uint8_t shop_counter_view(const GameState *g,uint8_t focus,uint8_t hud,uint8_t *
  if(hud>(uint8_t)(255u-SC_TILE_COUNT)){*detail=hud;return hud;}
  if(_cpu==CGB_TYPE)shop154_palette(7,1,sc_pal7);
  base=hud;raster_capture_inputs();VBK_REG=0;shop154_data(hud,SC_TILE_COUNT,sc_tiles);hud+=SC_TILE_COUNT;
- /* Cohesion: TABLE felt texture on every open felt cell (render.c cleared them to
+ /* TABLE felt texture on every open felt cell (render.c cleared them to
   * flat PAPER_TILE): marquee flanks, gutter column12, row9 and row15. */
  for(i=0;i<3u;i++){sc_felt(base,5,i,2);sc_felt(base,18,i,2);}
  for(i=3;i<9u;i++)sc_felt(base,12,i,1);
@@ -160,7 +160,7 @@ uint8_t shop_counter_view(const GameState *g,uint8_t focus,uint8_t hud,uint8_t *
  for(i=0;i<11u;i++){m[i]=base+((i==0u||i==10u)?SC_BULB:SC_FILL);a[i]=P_RED;}sc_row(7,1,11,m,a);
  sc_head(&hud,11,1,"SHOP",3,P_RED,1,3);
  /* Rows3..8: Joker counter (5..11) and pack counter (13..19), felt gutter12;
-  * row9 stays felt so the counters read as separate containers (combined1 fix). */
+  * row9 stays felt so the counters read as separate containers. */
  sc_panel(base,5,3,8,7,P_PANEL);sc_panel(base,13,3,8,7,P_PANEL);
  for(i=0;i<2u;i++){
   x=6u+i*3u;
@@ -191,12 +191,12 @@ uint8_t shop_counter_focus(const GameState *g,uint8_t old,uint8_t focus,uint8_t 
  sc_detail(g,focus,&detail);return detail;
 }
 
-/* Combined3: not compiled. The owned-Joker result now routes through the native
- * ledger (result149); this painter ran inside the legacy LCD-off window and
- * extended it by 9 frames (VALIDATION-COMBINED2). Kept for reference only. */
+/* Not compiled. Results with owned Jokers now go through the native ledger
+ * (result149); this painter ran inside the legacy LCD-off window and made
+ * it 9 frames longer. Kept for reference. */
 #ifdef SC_LEGACY_LEDGER_PAINTER
 #include "result_ledger_tiles.inc"
-/* ===== Legacy owned-Joker end of round: static Cash-Out Ledger  =====
+/* ===== Legacy owned-Joker end of round: static Cash-Out Ledger =====
  * result149 declines when Jokers are owned (their icons hold palettes3..7), so
  * render.c's legacy WIN/LOSS path paints this settled ledger instead. It uses
  * only palettes0..2 (render.c ui_palettes == result149 rpal), the native

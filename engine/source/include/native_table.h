@@ -3,7 +3,7 @@
 #include "game.h"
 #include <gb/gb.h>
 extern uint8_t native_table_live;
-/* Private presentation ownership, never part of GameState or SRAM. */
+/* Presentation state only, never part of GameState or SRAM. */
 #define NATIVE_BANK1_INVALID 0u
 #define NATIVE_BANK1_VALID 1u
 #define NATIVE_BANK1_SUSPENDED 2u

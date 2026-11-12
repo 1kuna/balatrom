@@ -9,14 +9,14 @@
 #define BOSS_ALLOWED 1
 #define BOSS_NO_SCORE 0
 #define BOSS_UNSUPPORTED 2
-/* Stable IDs match reference/catalog.json Blind0..29 (Small0 Big1).
+/* IDs follow the game's blind catalog order, Blind0..29 (Small0 Big1).
  Read/write supplied GameState only; external card removal/addition is not implied.
  Outputs unsupported for a missing hook or unsupported effect; pool excludes it.
  Core calls begin after deck shuffle, before first deal; card on each hand card
  after deal/mutation; before_hand after classification and history increments,
  before reading level-dependent base chips; after_hand before refill.
  Context includes selected/scoring masks and contained hand predicates.
- Owned RNG backend currently game_random(), not vanilla seed-parity. */
+ RNG is game_random(), so seeds don't match the desktop game. */
 uint8_t boss_supported(uint8_t id) CORE_BANKED;
 uint8_t boss_begin(GameState *g) CORE_BANKED;
 void boss_card(GameState *g,Card *card) CORE_BANKED;

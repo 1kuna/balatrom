@@ -10,7 +10,7 @@ class NoticeBinding(unittest.TestCase):
  def tearDown(self):self.tmp.cleanup()
  def test_notice_tamper_refused(self):
   m.verify_data_files(self.r,self.record);(self.r/'notices/LICENSE.txt').write_text('changed')
-  with self.assertRaisesRegex(ValueError,'reviewed data hashes'):m.verify_data_files(self.r,self.record)
+  with self.assertRaisesRegex(ValueError,'pinned hashes'):m.verify_data_files(self.r,self.record)
  def test_unlisted_notice_refused(self):
   (self.r/'notices/unreviewed.txt').write_text('extra')
   with self.assertRaises(ValueError):m.verify_data_files(self.r,self.record)

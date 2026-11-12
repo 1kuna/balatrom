@@ -84,6 +84,6 @@ void joker_card_mutation_game_event(GameState *g,uint8_t id,const JokerContext *
  }
  if(status!=JCM_PARKING_ROLL)return;
  if(g!=&game){g->numeric_error=1;return;}
- hit=game_probability_hit(2); /* one logical draw; unbiased native buckets, no named-stream parity */
+ hit=game_probability_hit(2); /* one logical draw; unbiased native buckets, not the desktop game's streams */
  joker_card_mutation_effect(g,id,c,o,1,hit);
 }

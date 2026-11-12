@@ -29,6 +29,6 @@ void raster_stop(void) NONBANKED;
 void raster_capture_inputs(void) NONBANKED;
 void raster_legacy_reset(void) BANKED;
 /* Preview hint retained for ABI compatibility; fresh core preview comes
- * from the stable authoritative GameState before public commands/cache. */
+ * from GameState before public commands/cache. */
 uint8_t raster_render(const GameState *, const HandPreview *) BANKED;
 #endif

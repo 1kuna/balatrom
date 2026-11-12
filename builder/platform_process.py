@@ -1,6 +1,6 @@
 """Compiler ownership: POSIX process groups, Windows kill-on-close Job Objects.
 
-The Windows branch requires native Windows validation; portable tests do not qualify it.
+The Windows branch is only covered by mocked tests so far.
 """
 from __future__ import annotations
 import ctypes

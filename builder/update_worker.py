@@ -1,4 +1,4 @@
-"""Isolated approved-source worker. No dependency installation or hardware access."""
+"""Isolated build worker for verified release source. Installs nothing and never touches hardware."""
 from __future__ import annotations
 import argparse
 import importlib.machinery

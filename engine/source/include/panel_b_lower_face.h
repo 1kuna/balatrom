@@ -6,7 +6,7 @@
 
 /* Semantic source IDs; resolve through the pinned canonical RGB555 table.
  * Complete lower policy, revision 1. No mutable global storage.
- * Caller must sanitize commands and prove color closure before encoding.
+ * Caller must sanitize commands and check color closure before encoding.
  * This face policy has no source Stone color 10; it is not a Stone fallback.
  */
 extern const uint8_t pb_lower_face_bg_ids[32];
