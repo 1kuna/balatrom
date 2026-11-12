@@ -1,0 +1,42 @@
+{
+  "compiler": {
+    "path": "toolchain/sdcc-reproducible.exe",
+    "bytes": 4424192,
+    "sha256": "919698d8766bc8bb3ee104eb781237ac7315b885efc7682236a398008c97d129",
+    "source_revision": 15267,
+    "source_archive": "toolchain/sdcc-r15267-corresponding-source.zip",
+    "Windows_PE_stack_reserve": 4194304
+  },
+  "upstream_GBDK": "https://github.com/gbdk-2020/gbdk-2020/releases/tag/4.5.0",
+  "vendor_patches": "https://github.com/gbdk-2020/gbdk-2020-sdcc/tree/sdcc-patched-gbdk-4.5.0/Patches",
+  "build_dependencies": [
+    {
+      "name": "LLVM-MinGW",
+      "version": "20261020",
+      "source": "https://github.com/mstorsjo/llvm-mingw/releases/tag/20261020",
+      "sha256": "e9c13e4ede38e715003ffc674d4d00a1088df8235439d1f0c16188ff0704c17e"
+    },
+    {
+      "name": "Boost",
+      "version": "1.89.0",
+      "source": "https://archives.boost.io/release/1.89.0/source/boost_1_89_0.tar.bz2",
+      "sha256": "85a33fa22621b4f314f8e85e1a5e2a9363d22e4f4992925d4bb3bc631b5a0c7a"
+    }
+  ],
+  "changes": [
+    "Apply official vendor compiler-source patches to SDCCr15267",
+    "Add explicit string.h include for strcmp declaration",
+    "Generate actual revision15267 metadata required by GBDK ABI header",
+    "Build Windows sm83 compiler using Clang/libc++ and Boost1.89",
+    "Map development source prefixes to /balatrom-toolchain in diagnostics",
+    "Match vendor 4 MiB Windows compiler stack reservation",
+    "Use deterministic PE timestamp linker option"
+  ],
+  "licenses": "The adjacent verbatim notices apply to the compiler and linked components. The matching configured source and build scripts must accompany binary redistribution.",
+  "source_documentation_addition": {
+    "path": "sdcc/doc/README.txt",
+    "revision": 15267,
+    "sha256": "39c81a22595e472dcae2caf7b1a4009a9bbaad7b043d800a5af0631c612961af",
+    "source_archive_sha256": "0f10392707a857b2aa67ffb3c540e5966da2b30e0c05f4f5f092c369c4b03f65"
+  }
+}

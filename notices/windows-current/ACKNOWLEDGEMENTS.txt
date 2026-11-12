@@ -1,0 +1,7 @@
+BalatROM Windows third party acknowledgements
+
+Pillow is used to process locally supplied image data. It incorporates FreeType code; the FreeType Project (https://freetype.org) authors retain their copyrights. The complete FreeType license/copyright text shipped by the Pillow wheel is retained in Pillow-vendor-LICENSE.txt.
+
+This software is based in part on the work of the Independent JPEG Group.
+
+The exact Electron MIT notice and Windows Chromium notices are retained at the installed application root and copied under resources/Electron-*. CPython, incorporated software, Pillow/codec, GBDK, SDCC, Boost, LLVM and MinGW notices are preserved in their original full texts. The above acknowledgements supplement those terms; they do not assign rights to Balatro-derived content or establish legal clearance.
