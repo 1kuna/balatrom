@@ -48,11 +48,19 @@ The full walkthrough is in the [install guide](INSTALL.md).
 - **Tested on real hardware with a ModRetro Chromatic.** Other Game Boy Color hardware should work too, but hasn't been tested yet.
 - **Your runs don't carry over** between desktop Balatro and BalatROM.
 
+## Build from source
+
+See [BUILDING.md](BUILDING.md) for source-build instructions and what the app and installer do on your computer.
+
 ## Found a bug?
 
 [Open an issue](https://github.com/1kuna/balatrom/issues). Tell me your OS, what you clicked, and what went wrong. Please don't attach game files, ROMs or saves.
 
 ## Credits
+
+The [MIT license](LICENSE) covers BalatROM's own code, not Balatro's name, art or content; third-party components keep their own licenses (see [THIRD-PARTY-NOTICES](THIRD-PARTY-NOTICES.md)).
+
+Balatro's names and text that appear in the engine belong to their owners, LocalThunk/Playstack.
 
 [Balatro](https://www.playbalatro.com/) is made by LocalThunk and published by Playstack. If you haven't played it, go buy it. It's great.
 
